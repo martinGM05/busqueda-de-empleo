@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">proyectoAppNativa</string>
+
+    <!-- Fields Common -->
+    <string name="email">Correo</string>
+    <string name="password">Contraseña</string>
+    <string name="name">Nombre</string>
+
+    <!-- Spineer -->
+    <string name="spinner">Escoje que tipo de usuario eres</string>
+    <string-array name="typesUser">
+        <item>Ciudadano</item>
+        <item>Empresa</item>
+    </string-array>
+
+    <!-- Firebase -->
+
+    <!-- Firebase results -->
+    <string name="userCreated">Usuario creado correctamente</string>
+    <string name="userCreatedError">Erro al crear el usuario</string>
+
+    <!-- Login -->
+    <string name="textEntrar">Entrar</string>
+    <string name="titleError">Error</string>
+    <string name="errorLogin">Usuario o contraseña incorrectos</string>
+    <string name="descriptionEmpty">Favor de llenar los campos</string>
+    <string name="textOk">Aceptar</string>
+    <string name="textCancel">Cancelar</string>
+    <string name="textRegister">Registrarse</string>
+    <string name="textLogin">Iniciar sesión</string>
+    <string name="textForgot">¿Olvidaste tu contraseña?</string>
+    <string name="titleLogin">Inserte sus datos.</string>
+    <string name="textLoginWith">ó</string>
+    <string name="textNewUser">¿No tienes una cuenta?</string>
+
+    <!-- Reset Account -->
+    <string name="textReset">Restablecer</string>
+    <string name="textResetPassword">Restablecer contraseña</string>
+    <string name="textResetPasswordDescription">Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña</string>
+    <string name="textResetPasswordOk">Enviar</string>
+    <string name="textResetPasswordCancel">Cancelar</string>
+
+    <!-- Register -->
+    <string name="textRegisterWith">ó</string>
+    <string name="textReturn">Regresar</string>
+    <string name="textHaveUser">¿Ya tienes una cuenta?</string>
+    <string name="textBtnRegister">Registrarse</string>
+    <string name="textDescription">Descripción</string>
+
+</resources>

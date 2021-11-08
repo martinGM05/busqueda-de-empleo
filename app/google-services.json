@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "635687640695",
+    "project_id": "busquedatrabajo-65a28",
+    "storage_bucket": "busquedatrabajo-65a28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635687640695:android:d6b84d0d5bf5632c8cb072",
+        "android_client_info": {
+          "package_name": "com.example.proyectoappnativa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635687640695-alh2v6lln09vdm267k3h388oq0etcpsk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrM0C764D6xtU3mgZ_v9GINJlkMT8Y_5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635687640695-alh2v6lln09vdm267k3h388oq0etcpsk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
