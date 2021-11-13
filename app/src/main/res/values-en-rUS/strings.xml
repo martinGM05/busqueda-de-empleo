@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">proyectoAppNativa</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="charge">Charging</string>
+    <string name="name">name</string>
+    <string name="spinner">Choose what type of user you are</string>
+    <string name="userCreated">User created successfully</string>
+    <string name="userCreatedError">Error creating user</string>
+    <string name="userLogged">User successfully logged in</string>
+    <string name="userLoggedError">User login error</string>
+    <string name="textEntrar">Get in</string>
+    <string name="titleError">Error</string>
+    <string name="errorLogin">Incorrect username or password</string>
+    <string name="descriptionEmpty">Please fill in the fields</string>
+    <string name="textOk">Accept</string>
+    <string name="textCancel">Cancel</string>
+    <string name="textRegister">Check in</string>
+    <string name="textLogin">Log in</string>
+    <string name="textForgot">Forgot your password?</string>
+    <string name="titleLogin">Insert your data.</string>
+    <string name="textLoginWith">ó</string>
+    <string name="textNewUser">You do not have an account?</string>
+    <string name="textReset">Restore</string>
+    <string name="textResetPassword">Restore password</string>
+    <string name="textResetPasswordDescription">Enter your email and we will send you a link to reset your password</string>
+    <string name="textResetPasswordOk">Send</string>
+    <string name="textResetPasswordCancel">Cancel</string>
+    <string name="textRegisterWith">ó</string>
+    <string name="textReturn">Go back</string>
+    <string name="textHaveUser">Do you already have an account?</string>
+    <string name="textBtnRegister">Check in</string>
+    <string name="textDescription">Description</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+
+</resources>

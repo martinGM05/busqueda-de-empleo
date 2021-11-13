@@ -14,6 +14,17 @@ public class User {
     //  private Blob photo;
 
 
+    public User() {
+    }
+
+    public User(String id, String name, String email, String type, String description) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.type = type;
+        this.description = description;
+    }
+
     public String getId() {
         return id;
     }

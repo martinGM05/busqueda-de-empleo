@@ -20,8 +20,8 @@
         app:layout_constraintVertical_bias="0.39">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -35,6 +35,7 @@
                 android:textSize="25sp" />
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -42,10 +43,8 @@
                 android:layout_marginRight="10dp"
                 android:hint="@string/email"
                 app:boxBackgroundMode="outline"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:boxCornerRadiusTopEnd="10dp"
-                app:boxCornerRadiusTopStart="10dp"
-                >
+                app:boxCornerRadiusTopStart="10dp">
 
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -54,10 +53,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
                     android:drawableEnd="@drawable/ic_baseline_account_circle_24"
-                    android:fontFamily="@font/poppinsmedium"/>
+                    android:fontFamily="@font/poppinsmedium" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -65,19 +65,16 @@
                 android:layout_marginRight="10dp"
                 android:hint="@string/password"
                 app:boxBackgroundMode="outline"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:boxCornerRadiusTopEnd="10dp"
                 app:boxCornerRadiusTopStart="10dp"
-                app:endIconMode="password_toggle"
-                >
+                app:endIconMode="password_toggle">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppinsmedium"
-                    android:inputType="textPassword"
-                    />
+                    android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -110,7 +107,7 @@
             app:elevation="2dp"
             app:icon="@drawable/ic_baseline_login_24"
             style="@style/Widget.MaterialComponents.Button.Icon"
-            android:backgroundTint="@color/colorPrimaryDark"
+            android:backgroundTint="@color/primaryDarkColor"
            />
 
 
@@ -228,5 +225,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/illustration" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,6 @@
     <string name="name">Nombre</string>
 
     <!-- Spineer -->
-    <string name="spinner">Escoje que tipo de usuario eres</string>
     <string-array name="typesUser">
         <item>Ciudadano</item>
         <item>Empresa</item>
@@ -17,7 +16,11 @@
 
     <!-- Firebase results -->
     <string name="userCreated">Usuario creado correctamente</string>
-    <string name="userCreatedError">Erro al crear el usuario</string>
+    <string name="userCreatedError">Error al crear el usuario</string>
+
+    <!-- Firebase logeado -->
+    <string name="userLogged">Usuario logueado correctamente</string>
+    <string name="userLoggedError">Error al logeado el usuario</string>
 
     <!-- Login -->
     <string name="textEntrar">Entrar</string>
@@ -46,5 +49,16 @@
     <string name="textHaveUser">¿Ya tienes una cuenta?</string>
     <string name="textBtnRegister">Registrarse</string>
     <string name="textDescription">Descripción</string>
+    <string name="charge">Cargando</string>
+    <string name="spinner">Escoge qué tipo de usuario eres</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drawer_open">Open Drawer</string>
+    <string name="drawer_close">Close Drawer</string>
+    <string name="cerrar_sesion">Cerrar Sesión</string>
+    <string name="title_sesion">Sesión</string>
+    <string name="perfil">Perfil</string>
+    <string name="postulaciones">Postulaciones</string>
+
 
 </resources>

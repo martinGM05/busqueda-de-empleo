@@ -1,22 +1,18 @@
 package com.example.proyectoappnativa;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+
+import Firebase.fireService;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -25,9 +21,7 @@ public class AuthActivity extends AppCompatActivity {
     Button btnEntrar;
     TextView tView;
 
-    FirebaseAuth mAuth;
-
-
+    fireService firebase = new fireService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,17 +31,15 @@ public class AuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auth);
         Tools.setSystemBarLight(this);
         Tools.setSystemBarColor(this, R.color.white);
-        getSupportActionBar().hide();
+      //  getSupportActionBar().hide();
 
         emailLogin = findViewById(R.id.txtEmailRegister);
         passwordLogin = findViewById(R.id.txtPassword);
         btnEntrar = findViewById(R.id.btnEntrar);
         tView = findViewById(R.id.txtRegresar);
 
-        mAuth = FirebaseAuth.getInstance();
-
         btnEntrar.setOnClickListener(view -> {
-            loginUser();
+           loginUser();
         });
 
         tView.setOnClickListener(view -> {
@@ -55,27 +47,31 @@ public class AuthActivity extends AppCompatActivity {
         });
     }
 
-    private void loginUser(){
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkUserStatus();
+    }
 
+    void checkUserStatus(){
+        SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
+        String email = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
+        if(!email.equals("0")){
+            startActivity(new Intent(this, HomeActivity.class));
+        }
+
+    }
+
+
+    private void loginUser(){
         String email = emailLogin.getText().toString();
         String password = passwordLogin.getText().toString();
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) ){
             AlertDialog.alertEmptyFields(this);
         }else{
-            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        Toast.makeText( AuthActivity.this, "User logged succesfully", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(AuthActivity.this, HomeActivity.class));
-                        emailLogin.setText("");
-                        passwordLogin.setText("");
-                    }else{
-                        Toast.makeText( AuthActivity.this, "Login Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
+            firebase.Auth(this, email, password);
+            emailLogin.setText("");
+            passwordLogin.setText("");
         }
     }
 
