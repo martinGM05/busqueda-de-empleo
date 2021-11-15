@@ -43,9 +43,6 @@ public class PruebasActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        Tools.setSystemBarLight(this);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_pruebas);
         btnLogout = findViewById(R.id.btnFuga);
         textView = findViewById(R.id.textId);
@@ -69,7 +66,7 @@ public class PruebasActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 DbUsers dbUsers = new DbUsers(PruebasActivity.this);
-                long uid = dbUsers.insertarUsuario(usuario.getId(), usuario.getName(), usuario.getEmail(), usuario.getDescription(), usuario.getType());
+                long uid = dbUsers.insertarUsuario(usuario.getId(), usuario.getName(), usuario.getEmail(), usuario.getDescription(), usuario.getType(), usuario.getImageURL());
                 if(uid > 0){
                     Toast.makeText(PruebasActivity.this, "Usuario guardado", Toast.LENGTH_SHORT).show();
                 }else{
@@ -133,8 +130,6 @@ public class PruebasActivity extends AppCompatActivity {
         idUser = id;
         if(!id.isEmpty()){
             textView.setText(id);
-            /*getInfoUser(id);
-            getInfoUserOffline(id);*/
             if(isConnection()){
                 Toast.makeText(this, "Conectado", Toast.LENGTH_SHORT).show();
                getInfoUser(id);

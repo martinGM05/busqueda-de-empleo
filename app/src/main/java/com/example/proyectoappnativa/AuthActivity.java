@@ -5,13 +5,16 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import Db.DbHelper;
 import Firebase.fireService;
 
 public class AuthActivity extends AppCompatActivity {
@@ -53,13 +56,12 @@ public class AuthActivity extends AppCompatActivity {
         checkUserStatus();
     }
 
-    void checkUserStatus(){
+    void checkUserStatus() {
         SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
         String email = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
-        if(!email.equals("0")){
+        if (!email.equals("0")) {
             startActivity(new Intent(this, HomeActivity.class));
         }
-
     }
 
 
@@ -69,9 +71,9 @@ public class AuthActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) ){
             AlertDialog.alertEmptyFields(this);
         }else{
-            firebase.Auth(this, email, password);
             emailLogin.setText("");
             passwordLogin.setText("");
+            firebase.Auth(this, email, password);
         }
     }
 

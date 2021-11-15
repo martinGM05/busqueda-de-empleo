@@ -15,7 +15,7 @@ import Models.User;
 
 public class DbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NOMBRE = "busquedaEmpleo.db";
     public static final String TABLE_USUARIO = "Usuario";
 
@@ -31,7 +31,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 "name TEXT NOT NULL," +
                 "email TEXT NOT NULL," +
                 "description TEXT NOT NULL," +
-                "type TEXT NOT NULL)");
+                "type TEXT NOT NULL," +
+                "imageURL TEXT NOT NULL)");
     }
 
     public List<User> getUserData(String id){
@@ -46,6 +47,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 user.setEmail(cursor.getString(2));
                 user.setDescription(cursor.getString(3));
                 user.setType(cursor.getString(4));
+                user.setImageURL(cursor.getString(5));
                 userList.add(user);
             } while (cursor.moveToNext());
         }

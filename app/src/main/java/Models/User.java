@@ -11,18 +11,19 @@ public class User {
     private String email;
     private String type;
     private String description;
-    //  private Blob photo;
+    private String imageURL;
 
 
     public User() {
     }
 
-    public User(String id, String name, String email, String type, String description) {
+    public User(String id, String name, String email, String type, String description, String imageURL) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.type = type;
         this.description = description;
+        this.imageURL = imageURL;
     }
 
     public String getId() {
@@ -60,6 +61,10 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    public String getImageURL() { return imageURL; }
+
+    public void setImageURL(String imageURL) { this.imageURL = imageURL; }
 
     public void setEmail(String email) {
         this.email = email;

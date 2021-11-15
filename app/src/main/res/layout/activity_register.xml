@@ -155,7 +155,7 @@
                         android:id="@+id/ivFoto"
                         android:layout_width="140dp"
                         android:layout_height="150dp"
-                        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+                        app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -204,7 +204,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="50dp"
-        android:backgroundTint="@color/primaryDarkColor"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:text="@string/textBtnRegister"
         android:textAlignment="center"
         android:textSize="18sp"

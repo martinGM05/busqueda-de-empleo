@@ -3,7 +3,7 @@
 
 
     <style name="ThemeOverlay.App.NavigationView" parent="">
-        <item name="colorPrimary">@color/secondaryDarkColor</item>
+        <item name="colorPrimary">@color/primaryDarkColor</item>
         <item name="colorSurface">@color/white</item>
     </style>
 

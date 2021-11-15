@@ -60,5 +60,12 @@
     <string name="perfil">Perfil</string>
     <string name="postulaciones">Postulaciones</string>
 
+    <!-- Alertas -->
+    <string name="textSesion">"Sesión"</string>
+    <string name="textCerrarSesion">"¿Seguro que quieres cerrar sesión?"</string>
+
+    <!-- Errores -->
+    <string name="textErrorImagen">"Error al cargar la imagen"</string>
+
 
 </resources>

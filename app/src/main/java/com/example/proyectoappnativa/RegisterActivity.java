@@ -74,15 +74,8 @@ public class RegisterActivity extends AppCompatActivity {
     int TOMAR_FOTO = 100;
     int SELEC_IMAGEN = 200;
 
-    String CARPETA_RAIZ = "MisFotosApp";
-    String CARPETAS_IMAGENES = "imagenes";
-    String RUTA_IMAGEN = CARPETA_RAIZ + CARPETAS_IMAGENES;
-    String path;
 
-    private StorageReference mStorageRef;
-    ProgressBar cargando;
 
-    Bitmap thumb_bitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +88,6 @@ public class RegisterActivity extends AppCompatActivity {
         ivFoto = findViewById(R.id.ivFoto);
         btnTomarFoto = findViewById(R.id.btnTomarFoto);
         btnSeleccionarImagen = findViewById(R.id.btnSeleccionarImagen);
-        mStorageRef = FirebaseStorage.getInstance().getReference().child("Fotos");
-        cargando = new ProgressBar(this);
 
         if(ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(RegisterActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -156,22 +147,16 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && requestCode == SELEC_IMAGEN){
-
             imagenUri = data.getData();
             ivFoto.setImageURI(imagenUri);
-            // subir imagen a firebase
-            subirImagenAFirebase(imagenUri);
-
         }else if(resultCode == RESULT_OK && requestCode == 1){
             Bundle extras = data.getExtras();
             Bitmap imgBitmap = (Bitmap) extras.get("data");
             ivFoto.setImageBitmap(imgBitmap);
-            // subir imagen a firebase
-            subirImagenAFirebase(getImageUri(this, imgBitmap));
+            imagenUri = getImageUri(this, imgBitmap);
         }
     }
 
-    // getImageUri
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -179,34 +164,6 @@ public class RegisterActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
-
-    public void subirImagenAFirebase(Uri imagenUri){
-        final StorageReference imagenRef = mStorageRef.child(imagenUri.getLastPathSegment());
-        UploadTask uploadTask = imagenRef.putFile(imagenUri);
-
-        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-
-                // Continue with the task to get the download URL
-                return imagenRef.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
-                    path = downloadUri.toString();
-                    Log.d("path", path);
-                } else {
-                    Log.e("Error", path);
-                }
-            }
-        });
-    }
 
     private void creatUser(){
         String email = emailRegister.getText().toString();
@@ -218,7 +175,7 @@ public class RegisterActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name) || TextUtils.isEmpty(description)){
             AlertDialog.alertEmptyFields(this);
         }else{
-           firebase.createUser(this, email, name, password, description, type);
+           firebase.uploadFirebaseUser(imagenUri, this, email, name, password, description, type);
            startActivity(new Intent(RegisterActivity.this, AuthActivity.class));
         }
     }

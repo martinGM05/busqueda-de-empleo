@@ -1,16 +1,23 @@
 package Firebase;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 
+import com.example.proyectoappnativa.AlertDialog;
 import com.example.proyectoappnativa.AuthActivity;
+import com.example.proyectoappnativa.HomeActivity;
 import com.example.proyectoappnativa.PruebasActivity;
 import com.example.proyectoappnativa.R;
 import com.example.proyectoappnativa.RegisterActivity;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -18,7 +25,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import Db.DbHelper;
 import Models.User;
 
 public class fireService{
@@ -28,6 +39,9 @@ public class fireService{
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     User userModel = new User();
     private SharedPreferences sharedPref;
+    private StorageReference mStorageRef;
+    String path;
+
 
     public void Auth(AuthActivity context, String email, String password){
         mAuth = FirebaseAuth.getInstance();
@@ -44,8 +58,15 @@ public class fireService{
                         editor.putString("userId", userId);
                         editor.apply();
                     }
+                    DbHelper dbHelper = new DbHelper(context);
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    if(db != null){
+                        Toast.makeText(context, "Base de datos creada", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(context, "Error en la base de datos", Toast.LENGTH_LONG).show();
+                    }
                     Toast.makeText( context, R.string.userLogged, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, PruebasActivity.class);
+                    Intent intent = new Intent(context, HomeActivity.class);
                     context.startActivity(intent);
                 }else{
                     Toast.makeText( context, R.string.userLoggedError + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -54,18 +75,18 @@ public class fireService{
         });
     }
 
-    public void createUser(RegisterActivity context, String email, String name, String password, String description, String type){
+    public void createUser(RegisterActivity context, String email, String name, String password, String description, String type, String image){
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    String userId = mAuth.getCurrentUser().getUid();
-                    userModel.setId(userId);
+                    userModel.setId(mAuth.getCurrentUser().getUid());
                     userModel.setName(name);
                     userModel.setEmail(email);
                     userModel.setDescription(description);
                     userModel.setType(type);
+                    userModel.setImageURL(image);
                     createDocument(context);
                 }
             }
@@ -93,5 +114,32 @@ public class fireService{
                 }
         );
     }
+
+
+    public void uploadFirebaseUser(Uri imagenUri, RegisterActivity context, String email, String name, String password, String description, String type){
+        mStorageRef = FirebaseStorage.getInstance().getReference().child("Fotos");
+        final StorageReference imagenRef = mStorageRef.child(imagenUri.getLastPathSegment());
+        UploadTask uploadTask = imagenRef.putFile(imagenUri);
+
+        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return imagenRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    path = downloadUri.toString();
+                    createUser(context, email, name, password, description, type, path);
+                }
+            }
+        });
+    }
+
 
 }
