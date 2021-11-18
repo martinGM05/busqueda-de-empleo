@@ -1,4 +1,4 @@
-package Db;
+package com.example.proyectoappnativa.Db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -28,6 +28,25 @@ public class DbUsers extends DbHelper{
             values.put("type", type);
             values.put("imageURL", imageURL);
             uid = db.insert(TABLE_USUARIO, null, values);
+        }catch (Exception ex){
+            ex.toString();
+        }
+        return uid;
+    }
+
+    public long updateUser(String id, String name, String email, String description, String type, String imageURL){
+        long uid = 0;
+        try{
+            DbHelper dbHelper = new DbHelper(context);
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("id", id);
+            values.put("name", name);
+            values.put("email", email);
+            values.put("description", description);
+            values.put("type", type);
+            values.put("imageURL", imageURL);
+            uid = db.update(TABLE_USUARIO, values, "id = ?", new String[]{id});
         }catch (Exception ex){
             ex.toString();
         }

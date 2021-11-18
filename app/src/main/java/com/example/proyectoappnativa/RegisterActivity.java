@@ -1,60 +1,32 @@
 package com.example.proyectoappnativa;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
-import Firebase.fireService;
-import Models.User;
+import com.example.proyectoappnativa.Firebase.fireService;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -87,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         ivFoto = findViewById(R.id.ivFoto);
         btnTomarFoto = findViewById(R.id.btnTomarFoto);
-        btnSeleccionarImagen = findViewById(R.id.btnSeleccionarImagen);
+        btnSeleccionarImagen = findViewById(R.id.btnSelectImage);
 
         if(ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(RegisterActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -113,10 +85,10 @@ public class RegisterActivity extends AppCompatActivity {
         autoCompleteTextView.setText(arrayAdapter.getItem(0).toString(), false);
         autoCompleteTextView.setAdapter(arrayAdapter);
 
-        emailRegister = findViewById(R.id.txtEmailRegister);
+        emailRegister = findViewById(R.id.inputName);
         nameRegister = findViewById(R.id.txtNombreRegister);
         passwordRegister = findViewById(R.id.txtPassword);
-        descriptionRegister = findViewById(R.id.txtDescripcion);
+        descriptionRegister = findViewById(R.id.inputDescription);
 
         btnRegistar = findViewById(R.id.btnEntrar);
         txtView = findViewById(R.id.txtRegresar);

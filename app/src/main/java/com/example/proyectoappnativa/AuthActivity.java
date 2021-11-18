@@ -5,17 +5,14 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import Db.DbHelper;
-import Firebase.fireService;
+import com.example.proyectoappnativa.Firebase.fireService;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -36,7 +33,7 @@ public class AuthActivity extends AppCompatActivity {
         Tools.setSystemBarColor(this, R.color.white);
       //  getSupportActionBar().hide();
 
-        emailLogin = findViewById(R.id.txtEmailRegister);
+        emailLogin = findViewById(R.id.inputName);
         passwordLogin = findViewById(R.id.txtPassword);
         btnEntrar = findViewById(R.id.btnEntrar);
         tView = findViewById(R.id.txtRegresar);

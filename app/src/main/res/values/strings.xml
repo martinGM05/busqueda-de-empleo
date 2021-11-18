@@ -12,13 +12,13 @@
         <item>Empresa</item>
     </string-array>
 
-    <!-- Firebase -->
+    <!-- com.example.proyectoappnativa.Firebase -->
 
-    <!-- Firebase results -->
+    <!-- com.example.proyectoappnativa.Firebase results -->
     <string name="userCreated">Usuario creado correctamente</string>
     <string name="userCreatedError">Error al crear el usuario</string>
 
-    <!-- Firebase logeado -->
+    <!-- com.example.proyectoappnativa.Firebase logeado -->
     <string name="userLogged">Usuario logueado correctamente</string>
     <string name="userLoggedError">Error al logeado el usuario</string>
 
@@ -63,6 +63,7 @@
     <!-- Alertas -->
     <string name="textSesion">"Sesión"</string>
     <string name="textCerrarSesion">"¿Seguro que quieres cerrar sesión?"</string>
+    <string name="userUpdated">"Usuario Actualizado"</string>
 
     <!-- Errores -->
     <string name="textErrorImagen">"Error al cargar la imagen"</string>

@@ -1,8 +1,4 @@
-package Models;
-
-import java.sql.Blob;
-import java.util.HashMap;
-import java.util.Map;
+package com.example.proyectoappnativa.Models;
 
 public class User {
 

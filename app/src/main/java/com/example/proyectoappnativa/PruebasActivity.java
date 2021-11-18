@@ -5,7 +5,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,10 +20,10 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import Db.DbUsers;
-import Db.DbHelper;
-import Firebase.fireService;
-import Models.User;
+import com.example.proyectoappnativa.Db.DbUsers;
+import com.example.proyectoappnativa.Db.DbHelper;
+import com.example.proyectoappnativa.Firebase.fireService;
+import com.example.proyectoappnativa.Models.User;
 
 public class PruebasActivity extends AppCompatActivity {
 

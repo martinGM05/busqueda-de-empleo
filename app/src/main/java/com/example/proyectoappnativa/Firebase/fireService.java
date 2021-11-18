@@ -1,20 +1,16 @@
-package Firebase;
+package com.example.proyectoappnativa.Firebase;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 
-import com.example.proyectoappnativa.AlertDialog;
 import com.example.proyectoappnativa.AuthActivity;
 import com.example.proyectoappnativa.HomeActivity;
-import com.example.proyectoappnativa.PruebasActivity;
 import com.example.proyectoappnativa.R;
 import com.example.proyectoappnativa.RegisterActivity;
 import com.google.android.gms.tasks.Continuation;
@@ -29,8 +25,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import Db.DbHelper;
-import Models.User;
+import com.example.proyectoappnativa.Db.DbHelper;
+import com.example.proyectoappnativa.Db.DbUsers;
+import com.example.proyectoappnativa.Models.User;
 
 public class fireService{
 
@@ -114,6 +111,48 @@ public class fireService{
                 }
         );
     }
+
+
+    public void updateUser(Activity context, String id, String name, String email,String description, String type, Uri imagenUri){
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        path = "Fotos/" + id;
+        StorageReference riversRef = mStorageRef.child(path);
+        UploadTask uploadTask = riversRef.putFile(imagenUri);
+        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+                return riversRef.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    path = downloadUri.toString();
+                    db.collection("Usuarios")
+                            .document(id).update("name", name, "description", description, "imageURL", path).addOnCompleteListener(
+                            new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        DbUsers dbUsers = new DbUsers(context);
+                                        dbUsers.updateUser(id, name, email, description, type, path);
+                                    }else{
+                                        Toast.makeText(context, "Nell", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                    );
+                } else {
+                    Toast.makeText(context, "Nell", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
 
 
     public void uploadFirebaseUser(Uri imagenUri, RegisterActivity context, String email, String name, String password, String description, String type){

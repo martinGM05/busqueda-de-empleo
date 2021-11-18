@@ -4,65 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ProfileFragment">
-
-
-    <Button
-        android:id="@+id/btnSelectImage"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="172dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/secondaryColor"
-        android:text="Seleccionar Imagen"
-        android:textAlignment="center"
-        app:icon="@drawable/ic_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
-
-    <Button
-        android:id="@+id/btnTomarFoto"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/secondaryColor"
-        android:text="Tomar Foto"
-        android:textAlignment="center"
-        app:elevation="2dp"
-        app:icon="@drawable/ic_camera"
-        app:layout_constraintEnd_toStartOf="@+id/btnSelectImage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+    tools:context=".newPostulationFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageUser"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="129dp"
+        android:layout_height="151dp"
         android:layout_gravity="center"
-        android:layout_marginStart="150dp"
-        android:layout_marginTop="108dp"
-        android:layout_marginEnd="145dp"
+        android:layout_marginTop="104dp"
+        android:layout_marginEnd="144dp"
         android:src="@drawable/ic_baseline_account_circle_24"
         app:civ_border_color="@color/black"
         app:civ_border_width="3dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.558"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout1"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="30dp"
         android:hint="@string/name"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusTopEnd="10dp"
@@ -80,13 +44,13 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
+        android:id="@+id/textInputLayout2"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
         android:hint="@string/textDescription"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusTopEnd="10dp"
@@ -96,12 +60,24 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout1">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputDescription"
+            android:id="@+id/descriptionPostulation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_baseline_text"
             android:fontFamily="@font/poppinsmedium" />
     </com.google.android.material.textfield.TextInputLayout>
+
+
+    <LinearLayout
+        android:id="@+id/containerMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"></LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSaveProfile"
@@ -115,7 +91,9 @@
         app:borderWidth="0dp"
         app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="TODO" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

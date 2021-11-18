@@ -1,4 +1,4 @@
-package Db;
+package com.example.proyectoappnativa.Db;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,9 +9,8 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import Models.User;
+import com.example.proyectoappnativa.Models.User;
 
 public class DbHelper extends SQLiteOpenHelper {
 

@@ -28,6 +28,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.proyectoappnativa.Entidades.Postulation;
+import com.example.proyectoappnativa.Fragments.detailPostulationFragment;
+import com.example.proyectoappnativa.Interfaces.IComunicFragment;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -36,12 +39,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 
-import Db.DbHelper;
-import Db.DbUsers;
-import Firebase.fireService;
-import Models.User;
+import com.example.proyectoappnativa.Db.DbHelper;
+import com.example.proyectoappnativa.Db.DbUsers;
+import com.example.proyectoappnativa.Firebase.fireService;
+import com.example.proyectoappnativa.Models.User;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IComunicFragment {
 
     DrawerLayout mDrawerLayout;
     NavigationView navigationView;
@@ -59,16 +62,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     fireService firebase = new fireService();
     User usuario = new User();
 
+    PostulationFragment listPostulation;
+    detailPostulationFragment detailPostulation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        if(findViewById(R.id.land) == null){
+            if(savedInstanceState!=null){
+                return;
+            }
+            listPostulation = new PostulationFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.content, listPostulation).commit();
+        }
+
+
         mDrawerLayout = findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
         toolbar = findViewById(R.id.toolbar);
-        getSupportFragmentManager().beginTransaction().add(R.id.content, new PostulationFragment()).commit();
+
+
         setTitle(R.string.postulaciones);
         setSupportActionBar(toolbar);
         toggle = setUpDrawerToogle();
@@ -217,6 +234,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void selectItemNav(MenuItem item) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
+        getInfoUser(idUser);
         switch (item.getItemId()){
             case R.id.nav_home:
                 ft.replace(R.id.content, new PostulationFragment()).commit();
@@ -246,5 +264,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void sendPostulation(Postulation postulation) {
+
+        detailPostulation = (detailPostulationFragment) this.getSupportFragmentManager().findFragmentById(R.id.land);
+
+        if(detailPostulation!=null){
+            detailPostulation.assignInformation(postulation);
+        }else{
+            detailPostulation = new detailPostulationFragment();
+            Bundle bundleEnvio = new Bundle();
+            bundleEnvio.putSerializable("object", postulation);
+            detailPostulation.setArguments(bundleEnvio);
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, detailPostulation).addToBackStack(null).commit();
+        }
     }
 }
