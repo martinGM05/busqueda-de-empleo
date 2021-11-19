@@ -68,5 +68,12 @@
     <!-- Errores -->
     <string name="textErrorImagen">"Error al cargar la imagen"</string>
 
+    <!-- KEY MAPS -->
+    <string name="android_sdk_places_api_key">AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE</string>
+    <string name="label_from">Direccion Origen</string>
+    <string name="label_to">Direccion Destino</string>
+    <string name="btn_change">Modificar</string>
+    <string name="google_maps_key">AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE</string>
+
 
 </resources>
