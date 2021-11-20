@@ -7,25 +7,29 @@
     tools:context=".newPostulationFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageUser"
-        android:layout_width="129dp"
+        android:id="@+id/imageP"
+        android:layout_width="0dp"
         android:layout_height="151dp"
         android:layout_gravity="center"
-        android:layout_marginTop="104dp"
-        android:layout_marginEnd="144dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginEnd="132dp"
         android:src="@drawable/ic_baseline_account_circle_24"
         app:civ_border_color="@color/black"
         app:civ_border_width="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.143" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout1"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="30dp"
         android:hint="@string/name"
         app:boxBackgroundMode="outline"
@@ -33,10 +37,10 @@
         app:boxCornerRadiusTopStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageUser">
+        app:layout_constraintTop_toBottomOf="@+id/imageP">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputName"
+            android:id="@+id/namePostulation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_baseline_account_circle_24"
@@ -46,10 +50,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="30dp"
         android:hint="@string/textDescription"
         app:boxBackgroundMode="outline"
@@ -70,13 +74,13 @@
     <EditText
         android:id="@+id/edit_text"
         android:layout_width="335dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="6dp"
         android:background="@android:drawable/editbox_background"
         android:drawableLeft="@drawable/ic_location"
         android:drawablePadding="16dp"
         android:gravity="center_vertical"
-        android:hint="Enter Address"
+        android:hint="@string/inputDirection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.574"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,17 +89,18 @@
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="297dp"
-        android:layout_height="118dp"
-        android:layout_marginBottom="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text"
+        app:layout_constraintVertical_bias="0.0"
         tools:context=".MainActivity" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabSaveProfile"
+        android:id="@+id/fabSavePostulation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -104,11 +109,38 @@
         android:elevation="5dp"
         android:src="@drawable/ic_baseline_save"
         app:borderWidth="0dp"
-        app:fabSize="auto"
+        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabPictureWithCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="@color/secondaryColor"
+        android:elevation="5dp"
+        android:src="@drawable/ic_camera"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/fabSavePostulation"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabPictureWithImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/secondaryLightColor"
+        android:elevation="5dp"
+        android:src="@drawable/ic_image"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/fabPictureWithCamera"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

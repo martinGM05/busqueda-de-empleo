@@ -13,6 +13,7 @@ import com.example.proyectoappnativa.R;
 import java.util.ArrayList;
 
 import com.example.proyectoappnativa.Entidades.Postulation;
+import com.example.proyectoappnativa.utils.Utils;
 
 public class AdapterPostulation extends RecyclerView.Adapter<AdapterPostulation.PostulationViewHolder> implements View.OnClickListener {
 
@@ -34,7 +35,9 @@ public class AdapterPostulation extends RecyclerView.Adapter<AdapterPostulation.
     @Override
     public void onBindViewHolder(@NonNull PostulationViewHolder holder, int position) {
         holder.txtNombre.setText(listPostulations.get(position).getName());
-        holder.txtDescription.setText(listPostulations.get(position).getDescription());
+        if(Utils.portrait == true){
+            holder.txtDescription.setText(listPostulations.get(position).getDescription());
+        }
     }
 
     @Override
@@ -60,7 +63,9 @@ public class AdapterPostulation extends RecyclerView.Adapter<AdapterPostulation.
         public PostulationViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNombre = (TextView) itemView.findViewById(R.id.idNombre);
-            txtDescription = (TextView) itemView.findViewById(R.id.idDescription);
+            if(Utils.portrait == true){
+                txtDescription = (TextView) itemView.findViewById(R.id.idDescription);
+            }
         }
     }
 }

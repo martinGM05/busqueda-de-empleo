@@ -7,7 +7,7 @@
     tools:context=".newPostulationFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageUser"
+        android:id="@+id/imageP"
         android:layout_width="129dp"
         android:layout_height="151dp"
         android:layout_gravity="center"
@@ -33,7 +33,7 @@
         app:boxCornerRadiusTopStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageUser">
+        app:layout_constraintTop_toBottomOf="@+id/imageP">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputName"

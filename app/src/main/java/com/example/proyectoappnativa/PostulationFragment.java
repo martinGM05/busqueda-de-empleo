@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.proyectoappnativa.Interfaces.IComunicFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import com.example.proyectoappnativa.Adapters.AdapterPostulation;
@@ -88,22 +89,8 @@ public class PostulationFragment extends Fragment {
     }
 
     private void fillList() {
-        listPostulations.add(new Postulation("1P", "Jardinero", "", "Se busca jardinero para patio de 10x10", 20.1, 20.6));
-        listPostulations.add(new Postulation("2P", "Programador", "", "Se solicita programador, necesito una pagina web para mi empresa", 20.1, 20.6));
-        listPostulations.add(new Postulation("3P", "Chef", "", "Se solicita ayudante de cocina", 20.1, 20.6));
-        listPostulations.add(new Postulation("4P", "Cartero", "", "Necesito repartir envios", 20.1, 20.6));
-        listPostulations.add(new Postulation("1P", "Jardinero", "", "Se busca jardinero para patio de 10x10", 20.1, 20.6));
-        listPostulations.add(new Postulation("2P", "Programador", "", "Se solicita programador, necesito una pagina web para mi empresa", 20.1, 20.6));
-        listPostulations.add(new Postulation("3P", "Chef", "", "Se solicita ayudante de cocina", 20.1, 20.6));
-        listPostulations.add(new Postulation("4P", "Cartero", "", "Necesito repartir envios", 20.1, 20.6));
-        listPostulations.add(new Postulation("1P", "Jardinero", "", "Se busca jardinero para patio de 10x10", 20.1, 20.6));
-        listPostulations.add(new Postulation("2P", "Programador", "", "Se solicita programador, necesito una pagina web para mi empresa", 20.1, 20.6));
-        listPostulations.add(new Postulation("3P", "Chef", "", "Se solicita ayudante de cocina", 20.1, 20.6));
-        listPostulations.add(new Postulation("4P", "Cartero", "", "Necesito repartir envios", 20.1, 20.6));
-        listPostulations.add(new Postulation("1P", "Jardinero", "", "Se busca jardinero para patio de 10x10", 20.1, 20.6));
-        listPostulations.add(new Postulation("2P", "Programador", "", "Se solicita programador, necesito una pagina web para mi empresa", 20.1, 20.6));
-        listPostulations.add(new Postulation("3P", "Chef", "", "Se solicita ayudante de cocina", 20.1, 20.6));
-        listPostulations.add(new Postulation("4P", "Cartero", "", "Necesito repartir envios", 20.1, 20.6));
+        String[] names = {"John","Tim","Sam","Ben"};
+       // listPostulations.add(new Postulation("1P", "Jardinero", "", "Se busca jardinero para patio de 10x10", 20.1, 20.6, {""}, ""));
     }
 
     @Override

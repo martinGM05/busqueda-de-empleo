@@ -1,25 +1,33 @@
 package com.example.proyectoappnativa.Entidades;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Postulation implements Serializable {
     private String id;
     private String name;
     private String image;
     private String description;
+    private String company;
     private double lat;
     private double lont;
+    private List<String> postulantes;
 
     public Postulation() {
     }
 
-    public Postulation(String id, String name, String image, String description, double lat, double lont) {
+    public Postulation(String id, String name, String image, String description, double lat, double lont, List<String> postulantes) {
         this.id = id;
         this.name = name;
         this.image = image;
         this.description = description;
         this.lat = lat;
         this.lont = lont;
+        this.company = company;
+        this.postulantes = postulantes;
     }
 
     public String getId() {
@@ -68,5 +76,21 @@ public class Postulation implements Serializable {
 
     public void setLont(double lont) {
         this.lont = lont;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public List<String> getPostulantes() {
+        return postulantes;
+    }
+
+    public void setPostulantes(List<String> postulantes) {
+        this.postulantes = postulantes;
     }
 }

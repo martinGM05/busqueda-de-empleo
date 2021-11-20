@@ -10,17 +10,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.proyectoappnativa.AuthActivity;
+import com.example.proyectoappnativa.Entidades.Postulation;
 import com.example.proyectoappnativa.HomeActivity;
 import com.example.proyectoappnativa.R;
 import com.example.proyectoappnativa.RegisterActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -28,6 +33,10 @@ import com.google.firebase.storage.UploadTask;
 import com.example.proyectoappnativa.Db.DbHelper;
 import com.example.proyectoappnativa.Db.DbUsers;
 import com.example.proyectoappnativa.Models.User;
+
+import java.sql.Array;
+import java.util.HashMap;
+import java.util.Map;
 
 public class fireService{
 
@@ -38,7 +47,9 @@ public class fireService{
     private SharedPreferences sharedPref;
     private StorageReference mStorageRef;
     String path;
-
+    String name = "";
+    String idDocument = "";
+    String id;
 
     public void Auth(AuthActivity context, String email, String password){
         mAuth = FirebaseAuth.getInstance();
@@ -112,6 +123,40 @@ public class fireService{
         );
     }
 
+
+    public void createDocumentPostulation(Activity context, Postulation postulation, Uri imageUri){
+        db.collection("Postulaciones").add(postulation).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                id = documentReference.getId();
+                mStorageRef = FirebaseStorage.getInstance().getReference();
+                path = "Fotos/" + id;
+                StorageReference riversRef = mStorageRef.child(path);
+                UploadTask uploadTask = riversRef.putFile(imageUri);
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        return riversRef.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUri = task.getResult();
+                            path = downloadUri.toString();
+                            db.collection("Postulaciones").document(id).update("id", id, "image", path);
+                            Toast.makeText(context, "Trabajo creado", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+    }
 
     public void updateUser(Activity context, String id, String name, String email,String description, String type, Uri imagenUri){
         mStorageRef = FirebaseStorage.getInstance().getReference();

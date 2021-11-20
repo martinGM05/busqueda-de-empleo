@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.proyectoappnativa.Entidades.Postulation;
 import com.example.proyectoappnativa.Fragments.detailPostulationFragment;
 import com.example.proyectoappnativa.Interfaces.IComunicFragment;
+import com.example.proyectoappnativa.utils.Utils;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -70,13 +71,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        Utils.portrait = true;
         if(findViewById(R.id.land) == null){
             if(savedInstanceState!=null){
                 return;
             }
             listPostulation = new PostulationFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.content, listPostulation).commit();
+        }else{
+            Utils.portrait = false;
         }
 
 
@@ -93,7 +96,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         navUsername = (TextView) headerView.findViewById(R.id.navUsername);
-        imageUser = (ImageView) headerView.findViewById(R.id.imageUser);
+        imageUser = (ImageView) headerView.findViewById(R.id.imageP);
         request = Volley.newRequestQueue(HomeActivity.this);
     }
 

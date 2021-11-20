@@ -74,6 +74,8 @@
     <string name="label_to">Direccion Destino</string>
     <string name="btn_change">Modificar</string>
     <string name="google_maps_key">AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE</string>
+    <string name="inputDirection">Ingrese la dirección</string>
+    <string name="apiKeyGoogleMaps">AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE</string>
 
 
 </resources>

@@ -121,7 +121,7 @@ public class ProfileFragment extends Fragment {
         btnTomarFoto = root.findViewById(R.id.btnTomarFoto);
         btnSeleccionarImagen = root.findViewById(R.id.btnSelectImage);
 
-        ivFoto = root.findViewById(R.id.imageUser);
+        ivFoto = root.findViewById(R.id.imageP);
         request = Volley.newRequestQueue(requireContext());
 
         fab.setOnClickListener(new View.OnClickListener() {

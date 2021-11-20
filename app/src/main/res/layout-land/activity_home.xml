@@ -37,6 +37,8 @@
                 android:id="@+id/land"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="90dp"
+                android:layout_marginBottom="15dp"
                 android:name="com.example.proyectoappnativa.Fragments.detailPostulationFragment"
                 tools:layout="@layout/fragment_detail_postulation"
                 android:layout_weight="1"/>
