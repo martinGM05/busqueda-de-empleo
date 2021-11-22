@@ -23,7 +23,7 @@ import java.util.List;
 import com.example.proyectoappnativa.Db.DbUsers;
 import com.example.proyectoappnativa.Db.DbHelper;
 import com.example.proyectoappnativa.Firebase.fireService;
-import com.example.proyectoappnativa.Models.User;
+import com.example.proyectoappnativa.Entidades.User;
 
 public class PruebasActivity extends AppCompatActivity {
 

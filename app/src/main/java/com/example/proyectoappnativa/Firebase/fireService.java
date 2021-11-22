@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 
@@ -32,10 +33,11 @@ import com.google.firebase.storage.UploadTask;
 
 import com.example.proyectoappnativa.Db.DbHelper;
 import com.example.proyectoappnativa.Db.DbUsers;
-import com.example.proyectoappnativa.Models.User;
+import com.example.proyectoappnativa.Entidades.User;
 
-import java.sql.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class fireService{
@@ -223,6 +225,39 @@ public class fireService{
                 }
             }
         });
+    }
+
+    public Task<QuerySnapshot> getPostulationFirebase(String company){
+        // consegir toda una coleccion de Postulaciones
+        return db.collection("Postulaciones").whereEqualTo("company", company).get();
+    }
+
+/*
+    public void getApplicationsFirebase(Activity activity, String idDocument){
+        db.collection("Postulaciones").document(idDocument).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        String name = document.getString("name");
+                        //Toast.makeText(activity, "Nombre: " + name, Toast.LENGTH_SHORT).show();
+                        List<String> postulantes = (List<String>) document.get("postulantes");
+                        if(postulantes != null){
+                            for(String postulante : postulantes){
+                                System.out.println("Postulante: " + postulante);
+                                //getUserFirebase(activity, postulante);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+*/
+
+    public Task<DocumentSnapshot> getApplicationsFirebase(String idDocument){
+        return db.collection("Postulaciones").document(idDocument).get();
     }
 
 

@@ -2,6 +2,7 @@ package com.example.proyectoappnativa;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,14 +15,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.proyectoappnativa.Interfaces.IComunicFragment;
+import com.example.proyectoappnativa.Db.DbHelper;
+import com.example.proyectoappnativa.Firebase.fireService;
+import com.example.proyectoappnativa.Interfaces.IComunicFragmentPostulation;
+import com.example.proyectoappnativa.Entidades.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.example.proyectoappnativa.Adapters.AdapterPostulation;
 import com.example.proyectoappnativa.Entidades.Postulation;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class PostulationFragment extends Fragment {
 
@@ -30,7 +38,9 @@ public class PostulationFragment extends Fragment {
     RecyclerView recycler;
 
     Activity activity;
-    IComunicFragment interfaceComunicFragment;
+    IComunicFragmentPostulation interfaceComunicFragment;
+    fireService firebase = new fireService();
+    Task<QuerySnapshot> data;
 
     public PostulationFragment() {
     }
@@ -53,16 +63,11 @@ public class PostulationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //return inflater.inflate(R.layout.fragment_postulation, container, false);
         View root = inflater.inflate(R.layout.fragment_postulation, container, false);
-
        fab = root.findViewById(R.id.fab);
-    
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getContext(), "Postulacion", Toast.LENGTH_SHORT).show();
-                // abrir un nuevo fragment
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new newPostulationFragment()).commit();
             }
         });
@@ -71,34 +76,53 @@ public class PostulationFragment extends Fragment {
         recycler = root.findViewById(R.id.recyclerId);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        fillList();
+        getPostulation();
 
-        AdapterPostulation adapter = new AdapterPostulation(listPostulations);
-        recycler.setAdapter(adapter);
-
-        adapter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Selecciona: "+listPostulations.get(recycler.getChildAdapterPosition(v)).getName(), Toast.LENGTH_LONG).show();
-                interfaceComunicFragment.sendPostulation(listPostulations.get(recycler.getChildAdapterPosition(v)));
-            }
-
-        });
 
         return root;
     }
 
-    private void fillList() {
-        String[] names = {"John","Tim","Sam","Ben"};
-       // listPostulations.add(new Postulation("1P", "Jardinero", "", "Se busca jardinero para patio de 10x10", 20.1, 20.6, {""}, ""));
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if(context instanceof  Activity){
             this.activity = (Activity) context;
-            interfaceComunicFragment = (IComunicFragment) this.activity;
+            interfaceComunicFragment = (IComunicFragmentPostulation) this.activity;
+        }
+    }
+
+    private void getPostulation(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginData", getContext().MODE_PRIVATE);
+        String id = sharedPreferences.getString("userId", "");
+        DbHelper dbHelper = new DbHelper(getContext());
+        List<User> userData = dbHelper.getUserData(id);
+        if(userData.size() > 0) {
+            for (User user : userData) {
+                data = firebase.getPostulationFirebase(user.getName());
+                data.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Postulation postulation = document.toObject(Postulation.class);
+                                listPostulations.add(postulation);
+                            }
+                            AdapterPostulation adapter = new AdapterPostulation(listPostulations, getActivity());
+                            recycler.setAdapter(adapter);
+                            adapter.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //Toast.makeText(getContext(), "Selecciona: "+listPostulations.get(recycler.getChildAdapterPosition(v)).getName(), Toast.LENGTH_LONG).show();
+                                    //firebase.getApplicationsFirebase(listPostulations.get(recycler.getChildAdapterPosition(v)).getId());
+                                    interfaceComunicFragment.sendPostulation(listPostulations.get(recycler.getChildAdapterPosition(v)));
+                                }
+
+                            });
+                        }
+                    }
+                });
+            }
         }
     }
 }

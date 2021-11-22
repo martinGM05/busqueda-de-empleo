@@ -1,6 +1,8 @@
-package com.example.proyectoappnativa.Models;
+package com.example.proyectoappnativa.Entidades;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private String id;
     private String name;

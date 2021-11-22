@@ -7,26 +7,34 @@
     android:orientation="vertical"
     android:layout_marginTop="50dp">
 
-    <ImageView
-        android:id="@+id/imagePostulation"
-        android:layout_width="72dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/idImage"
+        android:layout_width="92dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="36dp"
         android:src="@mipmap/ic_launcher"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toStartOf="@+id/idNombre"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/idNombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="0dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="13dp"
         android:text="Hola Mundo"
         android:textSize="25dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imagePostulation"
+        app:layout_constraintBottom_toTopOf="@+id/idDescription"
+        app:layout_constraintStart_toEndOf="@+id/idImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -34,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/idNombre"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="80dp"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -43,17 +51,20 @@
 
     <TextView
         android:id="@+id/idDescription"
-        android:layout_width="262dp"
-        android:layout_height="48dp"
+        android:layout_width="197dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="30dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="42dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
+        android:minHeight="48dp"
         android:text="Descripcion"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imagePostulation"
+        app:layout_constraintStart_toEndOf="@+id/idImage"
         app:layout_constraintTop_toBottomOf="@+id/idNombre" />
 
 

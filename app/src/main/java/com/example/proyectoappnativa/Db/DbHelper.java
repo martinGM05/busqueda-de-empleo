@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.proyectoappnativa.Models.User;
+import com.example.proyectoappnativa.Entidades.User;
 
 public class DbHelper extends SQLiteOpenHelper {
 

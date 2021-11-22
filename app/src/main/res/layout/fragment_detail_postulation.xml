@@ -1,31 +1,51 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.example.proyectoappnativa.Fragments.detailPostulationFragment">
+    tools:context="com.example.proyectoappnativa.Fragments.detailPostulationFragment"
+    android:layout_marginTop="90dp">
 
-    <ImageView
-        android:layout_marginTop="100dp"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:src="@drawable/ic_camera"
-        android:scaleType="fitXY"
-        android:layout_marginBottom="10dp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imagePostulationDetail"
+        android:layout_width="113dp"
+        android:layout_height="92dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:src="@mipmap/ic_launcher"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="3dp"
+        app:layout_constraintEnd_toStartOf="@+id/namePostulationDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/namePostulation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/namePostulationDetail"
+        android:layout_width="185dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
         android:text="@string/hello_blank_fragment"
-        android:textSize="40dp"/>
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/imagePostulationDetail"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/descriptionPostulation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment"
-        android:layout_marginTop="50dp"
-        android:textSize="30dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclePostulants"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagePostulationDetail" />
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

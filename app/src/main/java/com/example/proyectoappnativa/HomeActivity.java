@@ -30,7 +30,9 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.proyectoappnativa.Entidades.Postulation;
 import com.example.proyectoappnativa.Fragments.detailPostulationFragment;
-import com.example.proyectoappnativa.Interfaces.IComunicFragment;
+import com.example.proyectoappnativa.Fragments.detailProfileFragment;
+import com.example.proyectoappnativa.Interfaces.IComunicFragmentPostulation;
+import com.example.proyectoappnativa.Interfaces.IComunicationFragmentApplications;
 import com.example.proyectoappnativa.utils.Utils;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -43,9 +45,10 @@ import java.util.List;
 import com.example.proyectoappnativa.Db.DbHelper;
 import com.example.proyectoappnativa.Db.DbUsers;
 import com.example.proyectoappnativa.Firebase.fireService;
-import com.example.proyectoappnativa.Models.User;
+import com.example.proyectoappnativa.Entidades.User;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IComunicFragment {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        IComunicFragmentPostulation, IComunicationFragmentApplications {
 
     DrawerLayout mDrawerLayout;
     NavigationView navigationView;
@@ -66,22 +69,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     PostulationFragment listPostulation;
     detailPostulationFragment detailPostulation;
 
+    detailProfileFragment detailProfileFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Utils.portrait = true;
-        if(findViewById(R.id.land) == null){
-            if(savedInstanceState!=null){
-                return;
-            }
-            listPostulation = new PostulationFragment();
-            getSupportFragmentManager().beginTransaction().add(R.id.content, listPostulation).commit();
-        }else{
-            Utils.portrait = false;
-        }
 
+
+        listPostulation = new PostulationFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, listPostulation).commit();
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         navigationView = (NavigationView)findViewById(R.id.nav_view);
@@ -272,16 +270,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void sendPostulation(Postulation postulation) {
 
-        detailPostulation = (detailPostulationFragment) this.getSupportFragmentManager().findFragmentById(R.id.land);
+        detailPostulation = new detailPostulationFragment();
+        Bundle bundleEnvio = new Bundle();
+        bundleEnvio.putSerializable("object", postulation);
+        detailPostulation.setArguments(bundleEnvio);
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, detailPostulation).addToBackStack(null).commit();
+    }
 
-        if(detailPostulation!=null){
-            detailPostulation.assignInformation(postulation);
-        }else{
-            detailPostulation = new detailPostulationFragment();
-            Bundle bundleEnvio = new Bundle();
-            bundleEnvio.putSerializable("object", postulation);
-            detailPostulation.setArguments(bundleEnvio);
-            getSupportFragmentManager().beginTransaction().replace(R.id.content, detailPostulation).addToBackStack(null).commit();
-        }
+    @Override
+    public void sendApplications(User user) {
+        detailProfileFragment = new detailProfileFragment();
+        Bundle bundleProfile = new Bundle();
+        bundleProfile.putSerializable("objectProfile", user);
+        detailProfileFragment.setArguments(bundleProfile);
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, detailProfileFragment).addToBackStack(null).commit();
     }
 }
