@@ -197,7 +197,7 @@ public class HomePeoppleActivity extends AppCompatActivity implements Navigation
         getInfoUser(idUser);
         switch (item.getItemId()){
             case R.id.nav_home2:
-                 ft.replace(R.id.content, new PostulationFullFragment()).commit();
+                ft.replace(R.id.content, new PostulationFullFragment()).commit();
                 break;
             case R.id.nav_profile2:
                 ft.replace(R.id.content, new ProfileFragment()).commit();

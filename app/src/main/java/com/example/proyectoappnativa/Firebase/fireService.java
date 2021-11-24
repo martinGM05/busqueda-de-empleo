@@ -122,7 +122,7 @@ public class fireService{
         });
     }
 
-
+/*
     public void createDocument(RegisterActivity context){
         db.collection("users").document(userModel.getId()).set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -131,7 +131,8 @@ public class fireService{
             }
         });
     }
-
+    Error
+*/
     public Task<DocumentSnapshot> getInfoUser(String id){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         return db.collection("Usuarios").document(id).get();
