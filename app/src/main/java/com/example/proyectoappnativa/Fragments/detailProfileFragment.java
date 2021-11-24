@@ -3,15 +3,22 @@ package com.example.proyectoappnativa.Fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.proyectoappnativa.Entidades.Postulation;
 import com.example.proyectoappnativa.Entidades.User;
+import com.example.proyectoappnativa.PostulationFragment;
 import com.example.proyectoappnativa.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +58,9 @@ public class detailProfileFragment extends Fragment {
         return fragment;
     }
 
-    TextView textName;
+    TextView textName, textDescription, textEmail;
+    CircleImageView ivPhoto;
+    FloatingActionButton fab;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +78,9 @@ public class detailProfileFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_detail_profile, container, false);
 
         textName =  (TextView) root.findViewById(R.id.idNameProfile);
+        textEmail = (TextView) root.findViewById(R.id.idEmailProfile);
+        textDescription =  (TextView) root.findViewById(R.id.idDescriptionProfile);
+        ivPhoto = (CircleImageView) root.findViewById(R.id.imagePostulationDetail);
 
         Bundle objectProfile = getArguments();
         User user = null;
@@ -82,5 +94,8 @@ public class detailProfileFragment extends Fragment {
 
     public void assignInformation(User user) {
         textName.setText(user.getName());
+        textEmail.setText(user.getEmail());
+        textDescription.setText(user.getDescription());
+        Glide.with(this).load(user.getImageURL()).into(ivPhoto);
     }
 }

@@ -19,19 +19,26 @@
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout-land/postulation_list_layout.xml" value="0.21944444444444444" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/activity_auth.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/activity_home.xml" value="0.264" />
+        <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/activity_home_peopple.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/activity_pruebas.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/activity_register.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/applications_list_layout.xml" value="0.264" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/fragment_detail_postulation.xml" value="0.264" />
-        <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/fragment_detail_profile.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/fragment_detail_postulation_full.xml" value="0.264" />
+        <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/fragment_detail_profile.xml" value="0.264" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/fragment_new_postulation.xml" value="0.2878475798146241" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/fragment_postulation.xml" value="0.2222222222222222" />
+        <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/fragment_postulation_full.xml" value="0.264" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/nav_header.xml" value="0.25" />
+        <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/nav_header2.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/postulation_list_layout.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/toolbar.xml" value="0.25" />
+        <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/toolbar2.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/layout/type_user.xml" value="0.25" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.25" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/menu/drawer_menu.xml" value="0.25" />
+        <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/menu/drawer_menu2.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/menu/main_menu.xml" value="0.25" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.16302083333333334" />
         <entry key="..\:/Users/Martin Gonzalez/Desktop/UNAJ/proyectoAppNativa/app/src/main/res/xml/provider_paths.xml" value="0.25" />

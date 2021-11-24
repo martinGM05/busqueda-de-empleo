@@ -8,44 +8,65 @@
     android:layout_marginTop="90dp">
 
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imagePostulationDetail"
-        android:layout_width="113dp"
-        android:layout_height="92dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
-        android:src="@mipmap/ic_launcher"
-        app:civ_border_color="@color/black"
-        app:civ_border_width="3dp"
-        app:layout_constraintEnd_toStartOf="@+id/namePostulationDetail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabEditPostulation"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:src="?android:attr/actionModeFindDrawable"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imagePostulationDetail"
+                android:layout_width="113dp"
+                android:layout_height="92dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="6dp"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="3dp"
+                app:layout_constraintEnd_toStartOf="@+id/namePostulationDetail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/namePostulationDetail"
         android:layout_width="185dp"
         android:layout_height="27dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
         android:text="@string/hello_blank_fragment"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imagePostulationDetail"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@+id/namePostulationDetail" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclePostulants"
+        android:id="@+id/recyclePostulation"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
         android:layout_marginEnd="1dp"
         android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imagePostulationDetail" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

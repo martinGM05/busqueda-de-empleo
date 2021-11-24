@@ -13,26 +13,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.example.proyectoappnativa.Db.DbHelper;
+import com.example.proyectoappnativa.Db.DbUsers;
 import com.example.proyectoappnativa.Entidades.Postulation;
+import com.example.proyectoappnativa.Entidades.User;
+import com.example.proyectoappnativa.Firebase.fireService;
+import com.example.proyectoappnativa.Fragments.PostulationFullFragment;
 import com.example.proyectoappnativa.Fragments.detailPostulationFragment;
+import com.example.proyectoappnativa.Fragments.detailPostulationFullFragment;
 import com.example.proyectoappnativa.Fragments.detailProfileFragment;
 import com.example.proyectoappnativa.Interfaces.IComunicFragmentPostulation;
-import com.example.proyectoappnativa.Interfaces.IComunicationFragmentApplications;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -41,13 +43,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 
-import com.example.proyectoappnativa.Db.DbHelper;
-import com.example.proyectoappnativa.Db.DbUsers;
-import com.example.proyectoappnativa.Firebase.fireService;
-import com.example.proyectoappnativa.Entidades.User;
-
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        IComunicFragmentPostulation, IComunicationFragmentApplications {
+public class HomePeoppleActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, IComunicFragmentPostulation {
 
     DrawerLayout mDrawerLayout;
     NavigationView navigationView;
@@ -60,31 +56,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ImageView imageUser;
     Task<DocumentSnapshot> data;
     RequestQueue request;
-
-    FirebaseAuth mAuth;
     fireService firebase = new fireService();
     User usuario = new User();
+    FirebaseAuth mAuth;
 
     PostulationFragment listPostulation;
-    detailPostulationFragment detailPostulation;
+    detailPostulationFullFragment detailPostulation;
 
-    detailProfileFragment detailProfileFragment;
-
+    com.example.proyectoappnativa.Fragments.detailProfileFragment detailProfileFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_home_peopple);
 
-
+/*
         listPostulation = new PostulationFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content, listPostulation).commit();
-
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        getSupportFragmentManager().beginTransaction().replace(R.id.content2, listPostulation).commit();
+*/
+        mDrawerLayout = findViewById(R.id.drawer_layout2);
+        navigationView = (NavigationView)findViewById(R.id.nav_view2);
         headerView = navigationView.getHeaderView(0);
-        toolbar = findViewById(R.id.toolbar);
-
+        toolbar = findViewById(R.id.toolbar2);
 
         setTitle(R.string.postulaciones);
         setSupportActionBar(toolbar);
@@ -92,9 +85,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(toggle);
         navigationView.setNavigationItemSelectedListener(this);
 
-        navUsername = (TextView) headerView.findViewById(R.id.navUsername);
-        imageUser = (ImageView) headerView.findViewById(R.id.cvImagePostulation);
-        request = Volley.newRequestQueue(HomeActivity.this);
+        navUsername = (TextView) headerView.findViewById(R.id.navUsername2);
+        imageUser = (ImageView) headerView.findViewById(R.id.imageP2);
+
     }
 
     @Override
@@ -103,24 +96,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         checkUserStatus();
     }
 
-    private void cargarImage(String urlImage){
-        String url = urlImage;
-        url = url.replace(" ","%20");
-        ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
-            @Override
-            public void onResponse(Bitmap response) {
-                imageUser.setImageBitmap(response);
-            }
-        }, 0, 0, ImageView.ScaleType.CENTER, null, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this, R.string.textErrorImagen, Toast.LENGTH_LONG);
-            }
-        });
-        request.add(imageRequest);
-    }
-
-    public void checkUserStatus(){
+    private void checkUserStatus() {
         SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
         String id = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
         idUser = id;
@@ -137,41 +113,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void getInfoUserOffline(String id){
-        DbHelper dbHelper = new DbHelper(HomeActivity.this);
+        DbHelper dbHelper = new DbHelper(this);
         List<User> userData = dbHelper.getUserData(id);
         if(userData.size() > 0) {
             for (User user : userData) {
                 navUsername.setText(user.getName());
             }
         }
-    }
-
-    public void getInfoUser(String id){
-        data = firebase.getInfoUser(id);
-        data.addOnCompleteListener(documentSnapshot -> {
-           if(documentSnapshot.getResult().exists()){
-                usuario.setId(documentSnapshot.getResult().getString("id"));
-                usuario.setName(documentSnapshot.getResult().getString("name"));
-                usuario.setDescription(documentSnapshot.getResult().getString("description"));
-                usuario.setEmail(documentSnapshot.getResult().getString("email"));
-                usuario.setType(documentSnapshot.getResult().getString("type"));
-                usuario.setImageURL(documentSnapshot.getResult().getString("imageURL"));
-
-                DbHelper dbHelper = new DbHelper(HomeActivity.this);
-                List<User> userData = dbHelper.getUserData(id);
-                if(userData.size() > 0) {
-                    navUsername.setText(usuario.getName());
-                    cargarImage(usuario.getImageURL());
-                }else{
-                    DbUsers dbUsers = new DbUsers(HomeActivity.this);
-                    long uid = dbUsers.insertarUsuario(usuario.getId(), usuario.getName(), usuario.getEmail(), usuario.getDescription(), usuario.getType(), usuario.getImageURL());
-                    if(uid > 0){
-                        navUsername.setText(usuario.getName());
-                        cargarImage(usuario.getImageURL());
-                    }
-                }
-           }
-        });
     }
 
     @SuppressWarnings("deprecation")
@@ -185,31 +133,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void signOut() {
-        mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser() != null){
-            mAuth.signOut();
-            SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
-            sharedPreferences.edit().remove("userId").apply();
-            startActivity(new Intent(this, AuthActivity.class));
-            DbHelper dbHelper = new DbHelper(HomeActivity.this);
-            dbHelper.onUpgrade( dbHelper.getWritableDatabase(), DbHelper.DATABASE_VERSION, DbHelper.DATABASE_VERSION+1);
-            finish();
-        }else{
-            SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
-            sharedPreferences.edit().remove("userId").apply();
-            startActivity(new Intent(this, AuthActivity.class));
-            finish();
-        }
+    public void getInfoUser(String id){
+        data = firebase.getInfoUser(id);
+        data.addOnCompleteListener(documentSnapshot -> {
+            if(documentSnapshot.getResult().exists()){
+                usuario.setId(documentSnapshot.getResult().getString("id"));
+                usuario.setName(documentSnapshot.getResult().getString("name"));
+                usuario.setDescription(documentSnapshot.getResult().getString("description"));
+                usuario.setEmail(documentSnapshot.getResult().getString("email"));
+                usuario.setType(documentSnapshot.getResult().getString("type"));
+                usuario.setImageURL(documentSnapshot.getResult().getString("imageURL"));
+
+                DbHelper dbHelper = new DbHelper(this);
+                List<User> userData = dbHelper.getUserData(id);
+                if(userData.size() > 0) {
+                    navUsername.setText(usuario.getName());
+                    Glide.with(this).load(usuario.getImageURL()).into(imageUser);
+                }else{
+                    DbUsers dbUsers = new DbUsers(this);
+                    long uid = dbUsers.insertarUsuario(usuario.getId(), usuario.getName(), usuario.getEmail(), usuario.getDescription(), usuario.getType(), usuario.getImageURL());
+                    if(uid > 0){
+                        navUsername.setText(usuario.getName());
+                        Glide.with(this).load(usuario.getImageURL()).into(imageUser);
+                    }
+                }
+            }
+        });
     }
 
     private ActionBarDrawerToggle setUpDrawerToogle() {
-       return new ActionBarDrawerToggle(this,
-               mDrawerLayout,
-               toolbar,
-               R.string.drawer_open,
-               R.string.drawer_close
-       );
+        return new ActionBarDrawerToggle(this,
+                mDrawerLayout,
+                toolbar,
+                R.string.drawer_open,
+                R.string.drawer_close
+        );
     }
 
     @Override
@@ -236,13 +194,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction ft = fm.beginTransaction();
         getInfoUser(idUser);
         switch (item.getItemId()){
-            case R.id.nav_home:
-                ft.replace(R.id.content, new PostulationFragment()).commit();
+            case R.id.nav_home2:
+                 ft.replace(R.id.content, new PostulationFullFragment()).commit();
                 break;
-            case R.id.nav_profile:
+            case R.id.nav_profile2:
                 ft.replace(R.id.content, new ProfileFragment()).commit();
                 break;
-            case R.id.signOut:
+            case R.id.signOut2:
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
                 builder.setTitle(R.string.textSesion);
                 builder.setMessage(R.string.textCerrarSesion);
@@ -266,22 +224,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void sendPostulation(Postulation postulation) {
-
-        detailPostulation = new detailPostulationFragment();
-        Bundle bundleEnvio = new Bundle();
-        bundleEnvio.putSerializable("object", postulation);
-        detailPostulation.setArguments(bundleEnvio);
-        getSupportFragmentManager().beginTransaction().replace(R.id.content, detailPostulation).addToBackStack(null).commit();
+    private void signOut() {
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() != null){
+            mAuth.signOut();
+            SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
+            sharedPreferences.edit().remove("userId").apply();
+            startActivity(new Intent(this, AuthActivity.class));
+            DbHelper dbHelper = new DbHelper(this);
+            dbHelper.onUpgrade( dbHelper.getWritableDatabase(), DbHelper.DATABASE_VERSION, DbHelper.DATABASE_VERSION+1);
+            finish();
+        }else{
+            SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
+            sharedPreferences.edit().remove("userId").apply();
+            startActivity(new Intent(this, AuthActivity.class));
+            finish();
+        }
     }
 
     @Override
-    public void sendApplications(User user) {
-        detailProfileFragment = new detailProfileFragment();
-        Bundle bundleProfile = new Bundle();
-        bundleProfile.putSerializable("objectProfile", user);
-        detailProfileFragment.setArguments(bundleProfile);
-        getSupportFragmentManager().beginTransaction().replace(R.id.content, detailProfileFragment).addToBackStack(null).commit();
+    public void sendPostulation(Postulation postulation) {
+        detailPostulation = new detailPostulationFullFragment();
+        Bundle bundleEnvio = new Bundle();
+        bundleEnvio.putSerializable("postulation", postulation);
+        detailPostulation.setArguments(bundleEnvio);
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, detailPostulation).addToBackStack(null).commit();
     }
 }

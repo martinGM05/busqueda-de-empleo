@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,28 +14,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.proyectoappnativa.Adapters.AdapterApplications;
-import com.example.proyectoappnativa.Adapters.AdapterPostulation;
-import com.example.proyectoappnativa.Db.DbHelper;
-import com.example.proyectoappnativa.Db.DbUsers;
 import com.example.proyectoappnativa.Entidades.Postulation;
 import com.example.proyectoappnativa.Entidades.User;
 import com.example.proyectoappnativa.Firebase.fireService;
-import com.example.proyectoappnativa.HomeActivity;
-import com.example.proyectoappnativa.Interfaces.IComunicFragmentPostulation;
 import com.example.proyectoappnativa.Interfaces.IComunicationFragmentApplications;
 import com.example.proyectoappnativa.R;
+import com.example.proyectoappnativa.newPostulationFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -64,6 +58,10 @@ public class detailPostulationFragment extends Fragment {
     fireService firebase = new fireService();
     Task<DocumentSnapshot> dataApplications, dataUser;
     String idDocument = "";
+    AdapterApplications adapter;
+    FloatingActionButton fabEdit;
+    Bundle dataPostulation = new Bundle();
+    Postulation postulationInfo = new Postulation();
 
     public detailPostulationFragment() {
         // Required empty public constructor
@@ -104,14 +102,13 @@ public class detailPostulationFragment extends Fragment {
 
         ivPhoto = (CircleImageView) vista.findViewById(R.id.imagePostulationDetail);
         textName = (TextView) vista.findViewById(R.id.namePostulationDetail);
+        fabEdit = vista.findViewById(R.id.fabEditPostulation);
 
 
         listApplications = new ArrayList<>();
-        recycler = vista.findViewById(R.id.recyclePostulants);
+        recycler = vista.findViewById(R.id.recyclePostulation);
         recycler.setHasFixedSize(true);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
 
         Bundle objectPostulation = getArguments();
         Postulation postulation = null;
@@ -122,15 +119,31 @@ public class detailPostulationFragment extends Fragment {
             getApplications(idDocument);
         }
 
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler);
 
+        fabEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editPostulation();
+            }
+        });
 
         return vista;
     }
+
+    private void editPostulation(){
+        newPostulationFragment editPostulation = new newPostulationFragment();
+        dataPostulation.putSerializable("dataPostulation", postulationInfo);
+        editPostulation.setArguments(dataPostulation);
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, editPostulation).commit();
+    }
+
 
     public void assignInformation(Postulation postulation) {
         Glide.with(getActivity()).load(postulation.getImage()).into(ivPhoto);
         textName.setText(postulation.getName());
         idDocument = postulation.getId();
+        postulationInfo = postulation;
     }
 
     public void fill(){
@@ -173,7 +186,7 @@ public class detailPostulationFragment extends Fragment {
                                         User user = documentSnapshot.getResult().toObject(User.class);
                                         listApplications.add(user);
                                     }
-                                    AdapterApplications adapter = new AdapterApplications(listApplications, getActivity());
+                                    adapter = new AdapterApplications(listApplications, getActivity());
                                     recycler.setAdapter(adapter);
                                     adapter.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -199,5 +212,27 @@ public class detailPostulationFragment extends Fragment {
             interfaceComunicaFragments = (IComunicationFragmentApplications) this.activity;
         }
     }
+
+    private void removeApplications(String idDocument){
+        List<String> lista = new ArrayList<>();
+        for(User user : listApplications){
+            lista.add(user.getId());
+        }
+        firebase.updateApplicationsFirebase(idDocument, lista);
+    }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            listApplications.remove(viewHolder.getAdapterPosition());
+            adapter.notifyDataSetChanged();
+            removeApplications(idDocument);
+        }
+    };
 
 }

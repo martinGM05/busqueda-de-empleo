@@ -121,7 +121,7 @@ public class ProfileFragment extends Fragment {
         btnTomarFoto = root.findViewById(R.id.btnTomarFoto);
         btnSeleccionarImagen = root.findViewById(R.id.btnSelectImage);
 
-        ivFoto = root.findViewById(R.id.imageP);
+        ivFoto = root.findViewById(R.id.cvImagePostulation);
         request = Volley.newRequestQueue(requireContext());
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -244,13 +244,12 @@ public class ProfileFragment extends Fragment {
         if(TextUtils.isEmpty(name) || TextUtils.isEmpty(description)){
             AlertDialog.alertEmptyFields(getActivity());
         }else{
-            try {
-                firebase.updateUser(getActivity(), idUser, name, usuario.getEmail(),description, usuario.getType(),imagenUri);
-                Snackbar.make(requireActivity().findViewById(R.id.content), R.string.userUpdated, Snackbar.LENGTH_LONG).setBackgroundTint(getResources().getColor(R.color.secondaryDarkColor)).show();
-            }catch (Exception err){
-                Snackbar.make(requireActivity().findViewById(R.id.content), R.string.titleError, Snackbar.LENGTH_LONG).setBackgroundTint(getResources().getColor(R.color.secondaryDarkColor)).show();
-            }
-
+          try {
+              firebase.updateUser(getActivity(), idUser, name, usuario.getEmail(),description, usuario.getType(),imagenUri);
+              Snackbar.make(requireActivity().findViewById(R.id.content), R.string.userUpdated, Snackbar.LENGTH_LONG).setBackgroundTint(getContext().getColor(R.color.secondaryDarkColor)).show();
+          }catch (Exception err){
+              Snackbar.make(requireActivity().findViewById(R.id.content), R.string.titleError, Snackbar.LENGTH_LONG).setBackgroundTint(getContext().getColor(R.color.secondaryDarkColor)).show();
+          }
         }
     }
 

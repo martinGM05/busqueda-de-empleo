@@ -4,21 +4,96 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.detailProfileFragment">
+    tools:context=".Fragments.detailProfileFragment"
+    android:layout_marginTop="90dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/idNameProfile"
-        android:layout_width="206dp"
-        android:layout_height="74dp"
-        android:layout_marginStart="118dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="136dp"
-        android:text="@string/hello_blank_fragment"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardUser"
+        android:layout_width="338dp"
+        android:layout_height="520dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="50dp"
+        android:animateLayoutChanges="true"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.489" />
+        android:backgroundTint="@color/secondaryColor"
+        app:layout_constraintVertical_bias="0.816">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imagePostulationDetail"
+                android:layout_width="168dp"
+                android:layout_height="153dp"
+                android:layout_marginTop="76dp"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/idNameProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="29dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="10dp"
+                android:text="@string/hello_blank_fragment"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.504"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagePostulationDetail" />
+
+            <TextView
+                android:id="@+id/idEmailProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="50dp"
+                android:text="Email"
+                android:textSize="20dp"
+                app:flow_horizontalAlign="center"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/idNameProfile" />
+
+            <TextView
+                android:id="@+id/idDescriptionProfile"
+                android:layout_width="267dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="5dp"
+                android:text="Description"
+                android:textSize="20dp"
+                app:flow_horizontalAlign="center"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/idEmailProfile"
+                app:layout_constraintVertical_bias="0.148" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

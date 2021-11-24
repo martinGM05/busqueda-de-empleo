@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -29,6 +32,7 @@ public class AdapterApplications extends RecyclerView.Adapter<AdapterApplication
     ArrayList<User> applications;
     private View.OnClickListener listener;
     Activity activity;
+    String idUser;
 
     public AdapterApplications(ArrayList<User> applications, Activity activity) {
         this.applications = applications;
@@ -48,6 +52,9 @@ public class AdapterApplications extends RecyclerView.Adapter<AdapterApplication
         User user = applications.get(position);
         holder.textName.setText(user.getName());
         holder.textDescription.setText(user.getEmail());
+        Glide.with(activity).load(user.getImageURL()).into(holder.ivPhoto);
+        idUser = user.getId();
+        holder.user = user;
     }
 
     @Override
@@ -65,16 +72,35 @@ public class AdapterApplications extends RecyclerView.Adapter<AdapterApplication
             listener.onClick(v);
         }
     }
-
+/*
+    // Dismiss
+    public void dismissApplications(int pos){
+        applications.remove(pos);
+        this.notifyItemRemoved(pos);
+    }
+*/
     public class ApplicationsViewHolder extends RecyclerView.ViewHolder {
 
         TextView textName, textDescription;
+        CircleImageView ivPhoto;
+        Button btnUsers;
+        User user;
 
         public ApplicationsViewHolder(@NonNull View itemView) {
             super(itemView);
             textName = (TextView) itemView.findViewById(R.id.nameTV);
             textDescription = (TextView) itemView.findViewById(R.id.cityTextView);
+            ivPhoto = (CircleImageView) itemView.findViewById(R.id.iconApplications);
+            btnUsers = (Button) itemView.findViewById(R.id.btnApplications);
+
+            btnUsers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(activity, user.getId(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }
     }
+
 }

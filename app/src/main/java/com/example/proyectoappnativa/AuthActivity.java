@@ -9,10 +9,15 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.proyectoappnativa.Db.DbHelper;
+import com.example.proyectoappnativa.Entidades.User;
 import com.google.android.material.textfield.TextInputEditText;
 
 import com.example.proyectoappnativa.Firebase.fireService;
+
+import java.util.List;
 
 public class AuthActivity extends AppCompatActivity {
 
@@ -22,6 +27,8 @@ public class AuthActivity extends AppCompatActivity {
     TextView tView;
 
     fireService firebase = new fireService();
+    String idUser;
+    User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +62,25 @@ public class AuthActivity extends AppCompatActivity {
 
     void checkUserStatus() {
         SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
-        String email = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
-        if (!email.equals("0")) {
-            startActivity(new Intent(this, HomeActivity.class));
+        idUser = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
+        if (!idUser.equals("0")) {
+
+            // verficar si es ciudadano o empresa
+            DbHelper dbHelper = new DbHelper(this);
+            List<User> userData = dbHelper.getUserData(idUser);
+            if (userData.size() > 0) {
+                user = userData.get(0);
+                if (user.getType().equals("Ciudadano")) {
+                    //Toast.makeText(this, user.getType(), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, HomePeoppleActivity.class));
+                } else {
+                    //Toast.makeText(this, user.getType(), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, HomeActivity.class));
+                }
+            }
+
+
+            //startActivity(new Intent(this, HomeActivity.class));
         }
     }
 

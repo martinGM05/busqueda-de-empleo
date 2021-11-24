@@ -13,17 +13,20 @@ import androidx.annotation.NonNull;
 import com.example.proyectoappnativa.AuthActivity;
 import com.example.proyectoappnativa.Entidades.Postulation;
 import com.example.proyectoappnativa.HomeActivity;
+import com.example.proyectoappnativa.HomePeoppleActivity;
 import com.example.proyectoappnativa.R;
 import com.example.proyectoappnativa.RegisterActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -48,10 +51,14 @@ public class fireService{
     User userModel = new User();
     private SharedPreferences sharedPref;
     private StorageReference mStorageRef;
-    String path;
+    String path, pathP;
     String name = "";
     String idDocument = "";
     String id;
+    String userId;
+    String type = "", typeUser = "";
+    Intent intent;
+    Task<DocumentSnapshot> dataUser;
 
     public void Auth(AuthActivity context, String email, String password){
         mAuth = FirebaseAuth.getInstance();
@@ -61,23 +68,35 @@ public class fireService{
                 if(task.isSuccessful()){
                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
                     if(firebaseUser != null){
-                        String userId = firebaseUser.getUid();
+                        userId = firebaseUser.getUid();
                         sharedPref = context.getSharedPreferences("loginData", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putBoolean("loginCounter", true);
                         editor.putString("userId", userId);
                         editor.apply();
+
+                        DbHelper dbHelper = new DbHelper(context);
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+                        /*
+                        if(db != null){
+                            Toast.makeText(context, "Base de datos creada", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(context, "Error en la base de datos", Toast.LENGTH_LONG).show();
+                        }
+                        */
+                        dataUser = getInfoUser(userId);
+                        dataUser.addOnCompleteListener(documentSnapshot -> {
+                            if(documentSnapshot.getResult().exists()){
+                                typeUser = documentSnapshot.getResult().getString("type");
+                                if(typeUser.equals("Ciudadano")){
+                                    intent = new Intent(context, HomePeoppleActivity.class);
+                                }else{
+                                    intent = new Intent(context, HomeActivity.class);
+                                }
+                                context.startActivity(intent);
+                            }
+                        });
                     }
-                    DbHelper dbHelper = new DbHelper(context);
-                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-                    if(db != null){
-                        Toast.makeText(context, "Base de datos creada", Toast.LENGTH_LONG).show();
-                    }else{
-                        Toast.makeText(context, "Error en la base de datos", Toast.LENGTH_LONG).show();
-                    }
-                    Toast.makeText( context, R.string.userLogged, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(context, HomeActivity.class);
-                    context.startActivity(intent);
                 }else{
                     Toast.makeText( context, R.string.userLoggedError + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -99,6 +118,16 @@ public class fireService{
                     userModel.setImageURL(image);
                     createDocument(context);
                 }
+            }
+        });
+    }
+
+
+    public void createDocument(RegisterActivity context){
+        db.collection("users").document(userModel.getId()).set(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(context, "Se ha creado el usuario", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -228,37 +257,61 @@ public class fireService{
     }
 
     public Task<QuerySnapshot> getPostulationFirebase(String company){
-        // consegir toda una coleccion de Postulaciones
         return db.collection("Postulaciones").whereEqualTo("company", company).get();
     }
-
-/*
-    public void getApplicationsFirebase(Activity activity, String idDocument){
-        db.collection("Postulaciones").document(idDocument).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        String name = document.getString("name");
-                        //Toast.makeText(activity, "Nombre: " + name, Toast.LENGTH_SHORT).show();
-                        List<String> postulantes = (List<String>) document.get("postulantes");
-                        if(postulantes != null){
-                            for(String postulante : postulantes){
-                                System.out.println("Postulante: " + postulante);
-                                //getUserFirebase(activity, postulante);
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-*/
 
     public Task<DocumentSnapshot> getApplicationsFirebase(String idDocument){
         return db.collection("Postulaciones").document(idDocument).get();
     }
 
+    public void updateApplicationsFirebase(String idDocument, List<String> postulantes){
+        db.collection("Postulaciones").document(idDocument).update("postulantes", postulantes);
+    }
+
+    public void deletePostulationFirebase(String idDocument){
+        db.collection("Postulaciones").document(idDocument).delete();
+    }
+
+    public void updatePostulation(Activity activity, Postulation postulation, Uri imagenUri, short photo){
+        if(photo == 1){
+            id = postulation.getId();
+            mStorageRef = FirebaseStorage.getInstance().getReference();
+            pathP = "Fotos/" + id;
+            StorageReference imagenRef = mStorageRef.child(pathP);
+            UploadTask uploadTask = imagenRef.putFile(imagenUri);
+            Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return imagenRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        path = downloadUri.toString();
+                        db.collection("Postulaciones").document(postulation.getId()).update("name", postulation.getName(),
+                                "description", postulation.getDescription(), "lat", postulation.getLat(), "lont", postulation.getLont(),"image", path);
+                        Toast.makeText(activity, "Postulación actualizada", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }else{
+            db.collection("Postulaciones").document(postulation.getId()).update("name", postulation.getName(), "description",
+                    postulation.getDescription(), "lat", postulation.getLat(), "lont", postulation.getLont());
+            Toast.makeText(activity, "Postulación actualizada", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public Task<QuerySnapshot> getPostulations(){
+        return db.collection("Postulaciones").get();
+    }
+
+    public void addApplications(String idDocument, String idUser){
+        db.collection("Postulaciones").document(idDocument).update("postulantes", FieldValue.arrayUnion(idUser));
+    }
 
 }

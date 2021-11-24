@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home2"
+            android:title="Postulaciones"
+            android:icon="@drawable/ic_baseline_assignment"
+            android:checked="true"/>
+        <item
+            android:id="@+id/nav_postulation"
+            android:title="Postulaciones Aceptadas"
+            android:icon="@drawable/ic_baseline_save"/>
+        <item
+            android:id="@+id/nav_profile2"
+            android:title="@string/perfil"
+            android:icon="@drawable/ic_baseline_account_circle_24"/>
+    </group>
+
+    <item android:title="@string/title_sesion">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/signOut2"
+                    android:title="@string/cerrar_sesion"
+                    android:icon="@drawable/ic_exit"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>

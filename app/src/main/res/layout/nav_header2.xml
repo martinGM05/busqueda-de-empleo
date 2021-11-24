@@ -10,7 +10,7 @@
     android:paddingStart="5dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/cvImagePostulation"
+        android:id="@+id/imageP2"
         android:layout_width="100dp"
         android:layout_height="130dp"
         android:layout_gravity="center"
@@ -19,7 +19,7 @@
         app:civ_border_width="3dp" />
 
     <TextView
-        android:id="@+id/navUsername"
+        android:id="@+id/navUsername2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
