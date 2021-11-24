@@ -17,6 +17,8 @@ import com.example.proyectoappnativa.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Objects;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -82,7 +84,7 @@ public class detailPostulationFullFragment extends Fragment {
         cvImage = root.findViewById(R.id.cvImagePostulation);
         fabAddApplications = root.findViewById(R.id.fabApplicationsAdd);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginData", getContext().MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("loginData", getContext().MODE_PRIVATE);
          idUser = sharedPreferences.getString("userId", String.valueOf(getContext().MODE_PRIVATE));
 
         Bundle objectPostulation = getArguments();
@@ -107,10 +109,10 @@ public class detailPostulationFullFragment extends Fragment {
         PostulationFullFragment listPostulation = new PostulationFullFragment();
         try {
             firebase.addApplications(idPostulation, idUser);
-            Snackbar.make(requireActivity().findViewById(R.id.content), R.string.addApplications, Snackbar.LENGTH_LONG).setBackgroundTint(getContext().getColor(R.color.secondaryDarkColor)).show();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, listPostulation).commit();
+            Snackbar.make(requireActivity().findViewById(R.id.content), R.string.addApplications, Snackbar.LENGTH_LONG).setBackgroundTint(requireContext().getColor(R.color.secondaryDarkColor)).show();
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, listPostulation).commit();
         }catch (Exception err){
-            Snackbar.make(requireActivity().findViewById(R.id.content), R.string.titleError, Snackbar.LENGTH_LONG).setBackgroundTint(getContext().getColor(R.color.secondaryDarkColor)).show();
+            Snackbar.make(requireActivity().findViewById(R.id.content), R.string.titleError, Snackbar.LENGTH_LONG).setBackgroundTint(requireContext().getColor(R.color.secondaryDarkColor)).show();
         }
     }
 
@@ -118,7 +120,7 @@ public class detailPostulationFullFragment extends Fragment {
        textName.setText(postulation.getName());
        textDescription.setText(postulation.getDescription());
        Glide.with(this).load(postulation.getImage()).into(cvImage);
-        dataPostulation = postulation;
+       dataPostulation = postulation;
 
     }
 
