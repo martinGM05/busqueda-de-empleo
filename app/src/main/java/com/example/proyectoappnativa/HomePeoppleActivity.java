@@ -230,6 +230,7 @@ public class HomePeoppleActivity extends AppCompatActivity implements Navigation
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser() != null){
             mAuth.signOut();
+            firebase.deleteToken(idUser);
             SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
             sharedPreferences.edit().remove("userId").apply();
             startActivity(new Intent(this, AuthActivity.class));

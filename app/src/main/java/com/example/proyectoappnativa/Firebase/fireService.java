@@ -59,6 +59,7 @@ public class fireService{
     String type = "", typeUser = "";
     Intent intent;
     Task<DocumentSnapshot> dataUser;
+    Fcm fcm = new Fcm();
 
     public void Auth(AuthActivity context, String email, String password){
         mAuth = FirebaseAuth.getInstance();
@@ -77,14 +78,13 @@ public class fireService{
 
                         DbHelper dbHelper = new DbHelper(context);
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
-                        /*
-                        if(db != null){
-                            Toast.makeText(context, "Base de datos creada", Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(context, "Error en la base de datos", Toast.LENGTH_LONG).show();
-                        }
-                        */
                         dataUser = getInfoUser(userId);
+
+                        sharedPref = context.getSharedPreferences("loginData", Context.MODE_PRIVATE);
+                        String token = sharedPref.getString("token", String.valueOf(Context.MODE_PRIVATE));
+                        //fcm.saveToken(token);
+                        saveToken(token, userId);
+
                         dataUser.addOnCompleteListener(documentSnapshot -> {
                             if(documentSnapshot.getResult().exists()){
                                 typeUser = documentSnapshot.getResult().getString("type");
@@ -319,8 +319,8 @@ public class fireService{
         db.collection("Usuarios").document(id).update("token", token);
     }
 
-
-
-
+    public void deleteToken(String id){
+        db.collection("Usuarios").document(id).update("token", FieldValue.delete());
+    }  
 
 }

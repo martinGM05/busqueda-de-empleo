@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.proyectoappnativa.Entidades.Postulation;
 import com.example.proyectoappnativa.Entidades.User;
+import com.example.proyectoappnativa.Firebase.Fcm;
 import com.example.proyectoappnativa.Firebase.fireService;
 import com.example.proyectoappnativa.R;
 import com.example.proyectoappnativa.utils.Utils;
@@ -47,6 +48,7 @@ public class AdapterApplications extends RecyclerView.Adapter<AdapterApplication
     String idUser;
     fireService firebase = new fireService();
     Task<DocumentSnapshot> data;
+
 
     public AdapterApplications(ArrayList<User> applications, Activity activity) {
         this.applications = applications;
@@ -107,6 +109,7 @@ public class AdapterApplications extends RecyclerView.Adapter<AdapterApplication
             ivPhoto = (CircleImageView) itemView.findViewById(R.id.iconApplications);
             btnUsers = (Button) itemView.findViewById(R.id.btnApplications);
 
+
             btnUsers.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -129,8 +132,8 @@ public class AdapterApplications extends RecyclerView.Adapter<AdapterApplication
 
                 json.put("to", token);
                 JSONObject notification = new JSONObject();
-                notification.put("titulo", "");
-                notification.put("detalle", "soy un detalle");
+                notification.put("titulo", "Postulación");
+                notification.put("detalle", "Has sido aceptado");
 
                 json.put("data", notification);
 

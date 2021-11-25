@@ -21,22 +21,31 @@ import java.util.Random;
 public class Fcm extends FirebaseMessagingService {
 
 
-    fireService firebase = new fireService();
+
+    private SharedPreferences sharedPref;
 
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-
         Log.e("token", "mi token es: "+s);
-        saveToken(s);
+
+        sharedPref = getSharedPreferences("loginData", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("loginCounter", true);
+        editor.putString("token", s);
+        editor.apply();
+
+
+        //saveToken(s);
     }
 
-    private void saveToken(String s){
-        SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
-        String idUser = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
-        firebase.saveToken(s, idUser);
-    }
-
+    /*
+        public void saveToken(String s){
+            SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
+            String idUser = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
+            firebase.saveToken(s, idUser);
+        }
+    */
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -69,11 +78,9 @@ public class Fcm extends FirebaseMessagingService {
         String id = "mensaje";
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, id);
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
-            NotificationChannel nc = new NotificationChannel(id, "nuevo", NotificationManager.IMPORTANCE_HIGH);
-            nc.setShowBadge(true);
-            nm.createNotificationChannel(nc);
-        }
+        NotificationChannel nc = new NotificationChannel(id, "nuevo", NotificationManager.IMPORTANCE_HIGH);
+        nc.setShowBadge(true);
+        nm.createNotificationChannel(nc);
         builder.setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(titulo)
