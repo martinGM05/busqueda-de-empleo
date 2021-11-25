@@ -315,4 +315,12 @@ public class fireService{
         db.collection("Postulaciones").document(idDocument).update("postulantes", FieldValue.arrayUnion(idUser));
     }
 
+    public void saveToken(String token, String id){
+        db.collection("Usuarios").document(id).update("token", token);
+    }
+
+
+
+
+
 }
