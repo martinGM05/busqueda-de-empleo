@@ -78,13 +78,13 @@ public class AdapterPostulation extends RecyclerView.Adapter<AdapterPostulation.
 
     public class PostulationViewHolder extends RecyclerView.ViewHolder {
         TextView txtNombre, txtDescription;
-        CircleImageView ivFoto;
+        ImageView ivFoto;
 
 
         public PostulationViewHolder(@NonNull View itemView) {
             super(itemView);
             txtNombre = (TextView) itemView.findViewById(R.id.idNombre);
-            ivFoto = (CircleImageView) itemView.findViewById(R.id.idImage);
+            ivFoto = (ImageView) itemView.findViewById(R.id.idImage);
             if(Utils.portrait == true){
                 txtDescription = (TextView) itemView.findViewById(R.id.idDescription);
             }

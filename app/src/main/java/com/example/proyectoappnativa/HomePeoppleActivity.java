@@ -62,7 +62,7 @@ public class HomePeoppleActivity extends AppCompatActivity implements Navigation
     User usuario = new User();
     FirebaseAuth mAuth;
 
-    PostulationFragment listPostulation;
+    PostulationFullFragment listPostulation;
     detailPostulationFullFragment detailPostulation;
 
     com.example.proyectoappnativa.Fragments.detailProfileFragment detailProfileFragment;
@@ -72,10 +72,10 @@ public class HomePeoppleActivity extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_peopple);
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-/*
-        listPostulation = new PostulationFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content2, listPostulation).commit();
-*/
+
+        listPostulation = new PostulationFullFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, listPostulation).commit();
+
         mDrawerLayout = findViewById(R.id.drawer_layout2);
         navigationView = (NavigationView)findViewById(R.id.nav_view2);
         headerView = navigationView.getHeaderView(0);
