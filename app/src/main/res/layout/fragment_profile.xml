@@ -5,39 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ProfileFragment">
+    tools:context=".Fragments.ProfileFragment">
 
 
     <Button
         android:id="@+id/btnSelectImage"
         style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="172dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="149dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/secondaryColor"
         android:text="Seleccionar Imagen"
         android:textAlignment="center"
         app:icon="@drawable/ic_image"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintStart_toEndOf="@+id/btnTomarFoto"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnTomarFoto"
         style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_width="127dp"
+        android:layout_height="56dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/secondaryColor"
         android:text="Tomar Foto"
         android:textAlignment="center"
         app:elevation="2dp"
         app:icon="@drawable/ic_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnSelectImage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/cvImagePostulation"
@@ -83,17 +89,20 @@
         android:id="@+id/textInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="67dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="25dp"
         android:hint="@string/textDescription"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusTopEnd="10dp"
         app:boxCornerRadiusTopStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout1">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout1"
+        app:layout_constraintVertical_bias="0.055">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputDescription"

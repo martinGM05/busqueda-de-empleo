@@ -1,4 +1,4 @@
-package com.example.proyectoappnativa;
+package com.example.proyectoappnativa.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
@@ -31,6 +31,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.proyectoappnativa.ToolsCarpet.AlertDialog;
+import com.example.proyectoappnativa.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -41,7 +43,7 @@ import java.util.List;
 
 import com.example.proyectoappnativa.Db.DbHelper;
 import com.example.proyectoappnativa.Firebase.fireService;
-import com.example.proyectoappnativa.Entidades.User;
+import com.example.proyectoappnativa.Models.User;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**

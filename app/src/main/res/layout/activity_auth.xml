@@ -83,11 +83,13 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="364dp"
+        android:layout_height="48dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView">
@@ -99,24 +101,23 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEntrar"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/textLogin"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            app:elevation="2dp"
-            app:icon="@drawable/ic_baseline_login_24"
-            style="@style/Widget.MaterialComponents.Button.Icon"
             android:backgroundTint="@color/colorPrimaryDark"
-           />
+            android:text="@string/textLogin"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:elevation="2dp"
+            app:icon="@drawable/ic_baseline_login_24" />
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginBottom="50dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"

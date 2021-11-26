@@ -6,21 +6,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.proyectoappnativa.AuthActivity;
-import com.example.proyectoappnativa.Entidades.Postulation;
+import com.example.proyectoappnativa.Models.Postulation;
 import com.example.proyectoappnativa.HomeActivity;
-import com.example.proyectoappnativa.HomePeoppleActivity;
 import com.example.proyectoappnativa.R;
 import com.example.proyectoappnativa.RegisterActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,7 +25,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -36,12 +32,9 @@ import com.google.firebase.storage.UploadTask;
 
 import com.example.proyectoappnativa.Db.DbHelper;
 import com.example.proyectoappnativa.Db.DbUsers;
-import com.example.proyectoappnativa.Entidades.User;
+import com.example.proyectoappnativa.Models.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class fireService{
 
@@ -54,7 +47,7 @@ public class fireService{
     String path, pathP;
     String name = "";
     String idDocument = "";
-    String id;
+    String idPostulation;
     String userId;
     String type = "", typeUser = "";
     Intent intent;
@@ -85,14 +78,20 @@ public class fireService{
                         //fcm.saveToken(token);
                         saveToken(token, userId);
 
+
+
                         dataUser.addOnCompleteListener(documentSnapshot -> {
                             if(documentSnapshot.getResult().exists()){
                                 typeUser = documentSnapshot.getResult().getString("type");
-                                if(typeUser.equals("Ciudadano")){
+                                intent = new Intent(context, HomeActivity.class);
+                                intent.putExtra("typeUser", typeUser);
+
+                               /* if(typeUser.equals("Ciudadano")){
+
                                     intent = new Intent(context, HomePeoppleActivity.class);
                                 }else{
                                     intent = new Intent(context, HomeActivity.class);
-                                }
+                                }*/
                                 context.startActivity(intent);
                             }
                         });
@@ -160,9 +159,9 @@ public class fireService{
         db.collection("Postulaciones").add(postulation).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                id = documentReference.getId();
+                idPostulation = documentReference.getId();
                 mStorageRef = FirebaseStorage.getInstance().getReference();
-                path = "Fotos/" + id;
+                path = "Fotos/" + idPostulation;
                 StorageReference riversRef = mStorageRef.child(path);
                 UploadTask uploadTask = riversRef.putFile(imageUri);
                 uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -179,7 +178,7 @@ public class fireService{
                         if (task.isSuccessful()) {
                             Uri downloadUri = task.getResult();
                             path = downloadUri.toString();
-                            db.collection("Postulaciones").document(id).update("id", id, "image", path);
+                            db.collection("Postulaciones").document(idPostulation).update("id", idPostulation, "image", path);
                             Toast.makeText(context, "Trabajo creado", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
@@ -233,10 +232,10 @@ public class fireService{
 
 
     public void uploadFirebaseUser(Uri imagenUri, RegisterActivity context, String email, String name, String password, String description, String type){
-        mStorageRef = FirebaseStorage.getInstance().getReference().child("Fotos");
+        
+        mStorageRef = FirebaseStorage.getInstance().getReference().child("Fotos" + email);
         final StorageReference imagenRef = mStorageRef.child(imagenUri.getLastPathSegment());
         UploadTask uploadTask = imagenRef.putFile(imagenUri);
-
         Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -275,9 +274,9 @@ public class fireService{
 
     public void updatePostulation(Activity activity, Postulation postulation, Uri imagenUri, short photo){
         if(photo == 1){
-            id = postulation.getId();
+            idPostulation = postulation.getId();
             mStorageRef = FirebaseStorage.getInstance().getReference();
-            pathP = "Fotos/" + id;
+            pathP = "Fotos/" + idPostulation;
             StorageReference imagenRef = mStorageRef.child(pathP);
             UploadTask uploadTask = imagenRef.putFile(imagenUri);
             Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {

@@ -1,4 +1,4 @@
-package com.example.proyectoappnativa.Entidades;
+package com.example.proyectoappnativa.Models;
 
 import java.io.Serializable;
 

@@ -11,7 +11,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
-import com.example.proyectoappnativa.HomePeoppleActivity;
+import com.example.proyectoappnativa.HomeActivity;
 import com.example.proyectoappnativa.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -95,7 +95,7 @@ public class Fcm extends FirebaseMessagingService {
     }
 
     public PendingIntent clickNoti(){
-        Intent nf = new Intent(getApplicationContext(), HomePeoppleActivity.class);
+        Intent nf = new Intent(getApplicationContext(), HomeActivity.class);
         nf.putExtra("color", "rojo");
         nf.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return PendingIntent.getActivity(this, 0, nf, 0);

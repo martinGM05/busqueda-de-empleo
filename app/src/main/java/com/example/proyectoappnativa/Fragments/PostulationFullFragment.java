@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,10 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.proyectoappnativa.Adapters.AdapterPostulation;
-import com.example.proyectoappnativa.Entidades.Postulation;
+import com.example.proyectoappnativa.Models.Postulation;
 import com.example.proyectoappnativa.Firebase.fireService;
 import com.example.proyectoappnativa.Interfaces.IComunicFragmentPostulation;
 import com.example.proyectoappnativa.R;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
  * Use the {@link PostulationFullFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PostulationFullFragment extends Fragment {
+public class PostulationFullFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -73,26 +73,29 @@ public class PostulationFullFragment extends Fragment {
         }
     }
 
-    ArrayList<Postulation> listPostulations;
-    RecyclerView recycler;
-    fireService firebase = new fireService();
-    Task<QuerySnapshot> dataPostulations;
-    String idPostulation = "";
-    AdapterPostulation adapter;
-    Activity activity;
-    IComunicFragmentPostulation interfaceComunicFragment;
+    private ArrayList<Postulation> listPostulations;
+    private RecyclerView recycler;
+    private fireService firebase = new fireService();
+    private Task<QuerySnapshot> dataPostulations;
+    private String idPostulation = "";
+    private AdapterPostulation adapter;
+    private Activity activity;
+    private IComunicFragmentPostulation interfaceComunicFragment;
+    private SearchView svSearch;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_postulation_full, container, false);
 
+        svSearch = root.findViewById(R.id.svPostulation);
         listPostulations = new ArrayList<>();
         recycler = root.findViewById(R.id.recyclePostulations);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        
+
         getPostulations();
-        
+        initListener();
         return root;
     }
 
@@ -128,5 +131,20 @@ public class PostulationFullFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void initListener(){
+        svSearch.setOnQueryTextListener(this);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.filter(newText);
+        return false;
     }
 }

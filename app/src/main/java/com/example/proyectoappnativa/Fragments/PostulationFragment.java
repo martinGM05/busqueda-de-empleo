@@ -1,4 +1,4 @@
-package com.example.proyectoappnativa;
+package com.example.proyectoappnativa.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,9 @@ import android.view.ViewGroup;
 import com.example.proyectoappnativa.Db.DbHelper;
 import com.example.proyectoappnativa.Firebase.fireService;
 import com.example.proyectoappnativa.Interfaces.IComunicFragmentPostulation;
-import com.example.proyectoappnativa.Entidades.User;
+import com.example.proyectoappnativa.Models.User;
+import com.example.proyectoappnativa.Models.Postulation;
+import com.example.proyectoappnativa.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.proyectoappnativa.Adapters.AdapterPostulation;
-import com.example.proyectoappnativa.Entidades.Postulation;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -62,11 +63,11 @@ public class PostulationFragment extends Fragment {
 
     FloatingActionButton fab;
 
-    @Override
+@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_postulation, container, false);
-       fab = root.findViewById(R.id.fabApplicationsAdd);
+        fab = root.findViewById(R.id.fabApplicationsAdd);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,6 +84,8 @@ public class PostulationFragment extends Fragment {
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler);
         return root;
     }
+
+
 
     @Override
     public void onAttach(@NonNull Context context) {

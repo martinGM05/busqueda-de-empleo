@@ -1,9 +1,9 @@
-package com.example.proyectoappnativa;
+package com.example.proyectoappnativa.ToolsCarpet;
 
 
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
+
+import com.example.proyectoappnativa.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 

@@ -9,10 +9,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.proyectoappnativa.Db.DbHelper;
-import com.example.proyectoappnativa.Entidades.User;
+import com.example.proyectoappnativa.Models.User;
+import com.example.proyectoappnativa.ToolsCarpet.AlertDialog;
 import com.google.android.material.textfield.TextInputEditText;
 
 import com.example.proyectoappnativa.Firebase.fireService;
@@ -29,7 +29,7 @@ public class AuthActivity extends AppCompatActivity {
     fireService firebase = new fireService();
     String idUser;
     User user = new User();
-
+    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -38,7 +38,6 @@ public class AuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auth);
         Tools.setSystemBarLight(this);
         Tools.setSystemBarColor(this, R.color.white);
-      //  getSupportActionBar().hide();
 
         emailLogin = findViewById(R.id.inputName);
         passwordLogin = findViewById(R.id.txtPassword);
@@ -70,6 +69,10 @@ public class AuthActivity extends AppCompatActivity {
             List<User> userData = dbHelper.getUserData(idUser);
             if (userData.size() > 0) {
                 user = userData.get(0);
+                intent = new Intent(this, HomeActivity.class);
+                intent.putExtra("typeUser", user.getType());
+                startActivity(intent);
+                /*
                 if (user.getType().equals("Ciudadano")) {
                     //Toast.makeText(this, user.getType(), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(this, HomePeoppleActivity.class));
@@ -77,6 +80,8 @@ public class AuthActivity extends AppCompatActivity {
                     //Toast.makeText(this, user.getType(), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(this, HomeActivity.class));
                 }
+
+                 */
             }
 
 

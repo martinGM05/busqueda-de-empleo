@@ -1,6 +1,6 @@
 package com.example.proyectoappnativa.Interfaces;
 
-import com.example.proyectoappnativa.Entidades.Postulation;
+import com.example.proyectoappnativa.Models.Postulation;
 
 public interface IComunicFragmentPostulation {
 

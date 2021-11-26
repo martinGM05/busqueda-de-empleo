@@ -1,10 +1,7 @@
-package com.example.proyectoappnativa.Entidades;
+package com.example.proyectoappnativa.Models;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Postulation implements Serializable {
     private String id;
@@ -15,11 +12,12 @@ public class Postulation implements Serializable {
     private double lat;
     private double lont;
     private List<String> postulantes;
+    private List<String> keywords;
 
     public Postulation() {
     }
 
-    public Postulation(String id, String name, String image, String description, double lat, double lont, List<String> postulantes) {
+    public Postulation(String id, String name, String image, String description, String company, double lat, double lont, List<String> postulantes, List<String> keywords) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -28,6 +26,7 @@ public class Postulation implements Serializable {
         this.lont = lont;
         this.company = company;
         this.postulantes = postulantes;
+        this.keywords = keywords;
     }
 
     public String getId() {
@@ -92,5 +91,13 @@ public class Postulation implements Serializable {
 
     public void setPostulantes(List<String> postulantes) {
         this.postulantes = postulantes;
+    }
+
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
     }
 }

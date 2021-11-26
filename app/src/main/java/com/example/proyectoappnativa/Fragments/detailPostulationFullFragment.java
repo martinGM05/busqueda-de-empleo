@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,7 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.example.proyectoappnativa.Entidades.Postulation;
+import com.example.proyectoappnativa.Models.Postulation;
 import com.example.proyectoappnativa.Firebase.fireService;
 import com.example.proyectoappnativa.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,7 +41,7 @@ import com.google.android.material.snackbar.Snackbar;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.google.android.gms.maps.model.PolylineOptions;
+
 import com.google.maps.android.PolyUtil;
 import java.util.List;
 

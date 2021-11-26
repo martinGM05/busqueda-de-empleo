@@ -5,12 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -19,23 +17,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.example.proyectoappnativa.Entidades.Postulation;
-import com.example.proyectoappnativa.Entidades.User;
-import com.example.proyectoappnativa.Firebase.Fcm;
+import com.example.proyectoappnativa.Models.User;
 import com.example.proyectoappnativa.Firebase.fireService;
 import com.example.proyectoappnativa.R;
-import com.example.proyectoappnativa.utils.Utils;
 import com.google.android.gms.tasks.Task;
-import com.google.api.Context;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -119,6 +111,10 @@ public class AdapterApplications extends RecyclerView.Adapter<AdapterApplication
             });
 
         }
+    }
+
+    private void getInfoPostulation(){
+
     }
 
     private void sendNotificationTo(String id){

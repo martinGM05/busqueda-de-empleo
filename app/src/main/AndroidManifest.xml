@@ -22,9 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoAppNativa">
         <activity
-            android:name=".HomePeoppleActivity"
-            android:exported="false" />
-        <activity
             android:name=".HomeActivity"
             android:exported="false" />
 
@@ -32,7 +29,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE" />
 
-        <activity android:name=".PruebasActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".AuthActivity">
             <intent-filter>

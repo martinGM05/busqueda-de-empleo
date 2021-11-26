@@ -1,4 +1,4 @@
-package com.example.proyectoappnativa.Fragments;
+package com.example.proyectoappnativa.Fragments.Enterprise;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,12 +17,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.proyectoappnativa.Adapters.AdapterApplications;
-import com.example.proyectoappnativa.Entidades.Postulation;
-import com.example.proyectoappnativa.Entidades.User;
+import com.example.proyectoappnativa.Models.Postulation;
+import com.example.proyectoappnativa.Models.User;
 import com.example.proyectoappnativa.Firebase.fireService;
 import com.example.proyectoappnativa.Interfaces.IComunicationFragmentApplications;
 import com.example.proyectoappnativa.R;
-import com.example.proyectoappnativa.newPostulationFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -52,7 +51,7 @@ public class detailPostulationFragment extends Fragment {
     TextView textName, textDescription;
     CircleImageView ivPhoto;
     RecyclerView recycler;
-    detailProfileFragment detailProfileFragment;
+    com.example.proyectoappnativa.Fragments.detailProfileFragment detailProfileFragment;
     Activity activity;
     IComunicationFragmentApplications interfaceComunicaFragments;
     fireService firebase = new fireService();
@@ -114,7 +113,7 @@ public class detailPostulationFragment extends Fragment {
         Postulation postulation = null;
 
         if(objectPostulation != null){
-            postulation = (Postulation) objectPostulation.getSerializable("object");
+            postulation = (Postulation) objectPostulation.getSerializable("postulation");
             assignInformation(postulation);
             getApplications(idDocument);
         }

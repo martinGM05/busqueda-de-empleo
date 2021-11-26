@@ -1,4 +1,4 @@
-package com.example.proyectoappnativa;
+package com.example.proyectoappnativa.Fragments.Enterprise;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -21,10 +21,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
+import com.example.proyectoappnativa.ToolsCarpet.AlertDialog;
 import com.example.proyectoappnativa.Db.DbHelper;
-import com.example.proyectoappnativa.Entidades.Postulation;
+import com.example.proyectoappnativa.Models.Postulation;
 import com.example.proyectoappnativa.Firebase.fireService;
-import com.example.proyectoappnativa.Entidades.User;
+import com.example.proyectoappnativa.Models.User;
+import com.example.proyectoappnativa.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -62,7 +64,7 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
 
     EditText editText;
     FloatingActionButton fabSave, fabGallery, fabCamera;
-    TextInputEditText namePostulation, description;
+    TextInputEditText namePostulation, description, keywords;
     fireService firebase = new fireService();
     Task<DocumentSnapshot> user;
     double lat=19.0413,lon=-98.2062;
@@ -116,10 +118,12 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
 
         View root = inflater.inflate(R.layout.fragment_new_postulation, container, false);
 
+
         Bundle dataPostulation = getArguments();
         Postulation postulation = null;
 
         editText= root.findViewById(R.id.edit_text);
+        keywords = root.findViewById(R.id.keyWords);
         fabSave = root.findViewById(R.id.fabSavePostulation);
         namePostulation = root.findViewById(R.id.namePostulation);
         description = root.findViewById(R.id.descriptionPostulation);
@@ -176,6 +180,13 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
     public void assignInformation(Postulation postulation) {
         namePostulation.setText(postulation.getName());
         description.setText(postulation.getDescription());
+        postulation.getKeywords().forEach(keyword -> {
+            if(keywords.getText().toString().isEmpty()){
+                keywords.setText(keyword);
+            }else{
+                keywords.setText(keywords.getText().toString()+","+keyword);
+            }
+        });
         Glide.with(getActivity()).load(postulation.getImage()).into(imagePostulation);
         lat = postulation.getLat();
         lon = postulation.getLont();
@@ -251,8 +262,6 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
                     postulation.setCompany(user.getName());
                 }
             }
-
-
             if(TextUtils.isEmpty(namePostulation.getText()) || TextUtils.isEmpty(description.getText())){
                 AlertDialog.alertEmptyFields(getActivity());
             }else{
@@ -260,17 +269,16 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
                 postulation.setDescription(String.valueOf(description.getText()));
                 postulation.setLat(lat);
                 postulation.setLont(lon);
-            /* Matriz
-            String[] postulates = { "Martin", "Juan", "Pedro" };
-            List<String> postulantes = Arrays.asList(postulates);
-            postulation.setPostulantes(postulantes);
-            */
+                String[] categories = keywords.getText().toString().split(",");
+                List<String> keywordsList = Arrays.asList(categories);
+                postulation.setKeywords(keywordsList);
                 firebase.createDocumentPostulation(getActivity(), postulation, imagenUri);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new PostulationFragment()).commit();
             }
         }else{
             dataPostulation.setName(String.valueOf(namePostulation.getText()));
             dataPostulation.setDescription(String.valueOf(description.getText()));
+
             dataPostulation.setLat(lat);
             dataPostulation.setLont(lon);
             firebase.updatePostulation(getActivity(), dataPostulation, imagenUri, photo);

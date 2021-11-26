@@ -5,10 +5,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +20,9 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,8 +34,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.proyectoappnativa.Entidades.Postulation;
-import com.example.proyectoappnativa.Fragments.detailPostulationFragment;
+import com.bumptech.glide.Glide;
+import com.example.proyectoappnativa.Fragments.PostulationFullFragment;
+import com.example.proyectoappnativa.Fragments.detailPostulationFullFragment;
+import com.example.proyectoappnativa.Models.Postulation;
+import com.example.proyectoappnativa.Fragments.Enterprise.PostulationFragment;
+import com.example.proyectoappnativa.Fragments.ProfileFragment;
+import com.example.proyectoappnativa.Fragments.Enterprise.detailPostulationFragment;
 import com.example.proyectoappnativa.Fragments.detailProfileFragment;
 import com.example.proyectoappnativa.Interfaces.IComunicFragmentPostulation;
 import com.example.proyectoappnativa.Interfaces.IComunicationFragmentApplications;
@@ -44,7 +55,7 @@ import java.util.List;
 import com.example.proyectoappnativa.Db.DbHelper;
 import com.example.proyectoappnativa.Db.DbUsers;
 import com.example.proyectoappnativa.Firebase.fireService;
-import com.example.proyectoappnativa.Entidades.User;
+import com.example.proyectoappnativa.Models.User;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
         IComunicFragmentPostulation, IComunicationFragmentApplications {
@@ -55,75 +66,120 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     View headerView;
     ActionBarDrawerToggle toggle;
 
-    String idUser;
+    String id;
     TextView navUsername;
     ImageView imageUser;
     Task<DocumentSnapshot> data;
-    RequestQueue request;
-
     FirebaseAuth mAuth;
     fireService firebase = new fireService();
     User usuario = new User();
 
-    PostulationFragment listPostulation;
-    detailPostulationFragment detailPostulation;
-
+    Fragment detailPostulation;
     detailProfileFragment detailProfileFragment;
-
-
+    String typeUser;
+    PostulationFullFragment listPostulation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+    }
+
+    @Override
+    protected void onStart() {
+        checkUserStatus();
+        typeUser = getIntent().getStringExtra("typeUser");
+        if(typeUser.equals("Ciudadano")){
+            listPostulation = new PostulationFullFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, listPostulation).commit();
+
+            mDrawerLayout = findViewById(R.id.drawer_layout);
+            navigationView = (NavigationView)findViewById(R.id.nav_view);
+            headerView = navigationView.getHeaderView(0);
+            toolbar = findViewById(R.id.toolbar);
+
+            setTitle(R.string.postulaciones);
+            setSupportActionBar(toolbar);
+
+            toggle = setUpDrawerToogle();
+            mDrawerLayout.addDrawerListener(toggle);
+            navigationView.inflateMenu(R.menu.drawer_menu2);
+            navigationView.setNavigationItemSelectedListener(this);
 
 
-        listPostulation = new PostulationFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content, listPostulation).commit();
+            navUsername = (TextView) headerView.findViewById(R.id.navUsername);
+            imageUser = (ImageView) headerView.findViewById(R.id.cvImagePostulation);
+        }else{
+            getSupportFragmentManager().beginTransaction().replace(R.id.content, new PostulationFragment()).commit();
 
-        mDrawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = (NavigationView)findViewById(R.id.nav_view);
+            mDrawerLayout = findViewById(R.id.drawer_layout);
+            navigationView = (NavigationView)findViewById(R.id.nav_view);
+            headerView = navigationView.getHeaderView(0);
+            toolbar = findViewById(R.id.toolbar);
+
+            setTitle(R.string.postulaciones);
+            setSupportActionBar(toolbar);
+
+            toggle = setUpDrawerToogle();
+            mDrawerLayout.addDrawerListener(toggle);
+            navigationView.inflateMenu(R.menu.drawer_menu);
+            navigationView.setNavigationItemSelectedListener(this);
+
+            navUsername = (TextView) headerView.findViewById(R.id.navUsername);
+            imageUser = (ImageView) headerView.findViewById(R.id.cvImagePostulation);
+        }
+
+
+        super.onStart();
+    }
+
+    private void toolbar(){
+        /*if(type.equals("Ciudadano")){
+            mDrawerLayout = findViewById(R.id.drawer_layout2);
+            navigationView = (NavigationView)findViewById(R.id.nav_view2);
+            headerView = navigationView.getHeaderView(0);
+        }else{
+            mDrawerLayout = findViewById(R.id.drawer_layout);
+            navigationView = (NavigationView)findViewById(R.id.nav_view);
+            headerView = navigationView.getHeaderView(0);
+        }*/
         headerView = navigationView.getHeaderView(0);
         toolbar = findViewById(R.id.toolbar);
-
-
         setTitle(R.string.postulaciones);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         toggle = setUpDrawerToogle();
         mDrawerLayout.addDrawerListener(toggle);
         navigationView.setNavigationItemSelectedListener(this);
 
         navUsername = (TextView) headerView.findViewById(R.id.navUsername);
         imageUser = (ImageView) headerView.findViewById(R.id.cvImagePostulation);
-        request = Volley.newRequestQueue(HomeActivity.this);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        checkUserStatus();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 
-    private void cargarImage(String urlImage){
-        String url = urlImage;
-        url = url.replace(" ","%20");
-        ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
-            @Override
-            public void onResponse(Bitmap response) {
-                imageUser.setImageBitmap(response);
-            }
-        }, 0, 0, ImageView.ScaleType.CENTER, null, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(HomeActivity.this, R.string.textErrorImagen, Toast.LENGTH_LONG);
-            }
-        });
-        request.add(imageRequest);
+    @Override
+    public void onBackPressed() {
+        if(mDrawerLayout.isDrawerOpen(Gravity.LEFT)){
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        }else{
+            super.onBackPressed();
+        }
     }
+
 
     public void checkUserStatus(){
         SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
-        String id = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
-        idUser = id;
+        id = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
         if(!id.isEmpty()){
             if(isConnection()){
                 getInfoUser(id);
@@ -146,34 +202,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void getInfoUser(String id){
-        data = firebase.getInfoUser(id);
-        data.addOnCompleteListener(documentSnapshot -> {
-           if(documentSnapshot.getResult().exists()){
-                usuario.setId(documentSnapshot.getResult().getString("id"));
-                usuario.setName(documentSnapshot.getResult().getString("name"));
-                usuario.setDescription(documentSnapshot.getResult().getString("description"));
-                usuario.setEmail(documentSnapshot.getResult().getString("email"));
-                usuario.setType(documentSnapshot.getResult().getString("type"));
-                usuario.setImageURL(documentSnapshot.getResult().getString("imageURL"));
-
-                DbHelper dbHelper = new DbHelper(HomeActivity.this);
-                List<User> userData = dbHelper.getUserData(id);
-                if(userData.size() > 0) {
-                    navUsername.setText(usuario.getName());
-                    cargarImage(usuario.getImageURL());
-                }else{
-                    DbUsers dbUsers = new DbUsers(HomeActivity.this);
-                    long uid = dbUsers.insertarUsuario(usuario.getId(), usuario.getName(), usuario.getEmail(), usuario.getDescription(), usuario.getType(), usuario.getImageURL());
-                    if(uid > 0){
-                        navUsername.setText(usuario.getName());
-                        cargarImage(usuario.getImageURL());
-                    }
-                }
-           }
-        });
-    }
-
     @SuppressWarnings("deprecation")
     public boolean isConnection(){
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -185,11 +213,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public void getInfoUser(String id){
+        data = firebase.getInfoUser(id);
+        data.addOnCompleteListener(documentSnapshot -> {
+           if(documentSnapshot.getResult().exists()){
+                usuario.setId(documentSnapshot.getResult().getString("id"));
+                usuario.setName(documentSnapshot.getResult().getString("name"));
+                usuario.setDescription(documentSnapshot.getResult().getString("description"));
+                usuario.setEmail(documentSnapshot.getResult().getString("email"));
+                usuario.setType(documentSnapshot.getResult().getString("type"));
+                usuario.setImageURL(documentSnapshot.getResult().getString("imageURL"));
+
+                DbHelper dbHelper = new DbHelper(this);
+                List<User> userData = dbHelper.getUserData(id);
+                if(userData.size() > 0) {
+                    navUsername.setText(usuario.getName());
+                    Glide.with(this).load(usuario.getImageURL()).into(imageUser);
+                }else{
+                    DbUsers dbUsers = new DbUsers(this);
+                    long uid = dbUsers.insertarUsuario(usuario.getId(), usuario.getName(), usuario.getEmail(), usuario.getDescription(), usuario.getType(), usuario.getImageURL());
+                    if(uid > 0){
+                        navUsername.setText(usuario.getName());
+                        Glide.with(this).load(usuario.getImageURL()).into(imageUser);
+                    }
+                }
+           }
+        });
+    }
+
+
+
     private void signOut() {
         mAuth = FirebaseAuth.getInstance();
         if(mAuth.getCurrentUser() != null){
             mAuth.signOut();
-            firebase.deleteToken(idUser);
+            firebase.deleteToken(id);
             SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
             sharedPreferences.edit().remove("userId").apply();
             startActivity(new Intent(this, AuthActivity.class));
@@ -197,6 +255,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             dbHelper.onUpgrade( dbHelper.getWritableDatabase(), DbHelper.DATABASE_VERSION, DbHelper.DATABASE_VERSION+1);
             finish();
         }else{
+            firebase.deleteToken(id);
             SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
             sharedPreferences.edit().remove("userId").apply();
             startActivity(new Intent(this, AuthActivity.class));
@@ -235,15 +294,30 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void selectItemNav(MenuItem item) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        getInfoUser(idUser);
+        getInfoUser(id);
         switch (item.getItemId()){
             case R.id.nav_home:
-                ft.replace(R.id.content, new PostulationFragment()).commit();
+                if (typeUser.equals("Ciudadano")){
+                    ft.replace(R.id.content, new PostulationFullFragment()).commit();
+                }else {
+                    ft.replace(R.id.content, new PostulationFragment()).commit();
+                }
                 break;
             case R.id.nav_profile:
                 ft.replace(R.id.content, new ProfileFragment()).commit();
                 break;
-            case R.id.signOut:
+        }
+        setTitle(item.getTitle());
+        mDrawerLayout.closeDrawers();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemHelp:
+                Toast.makeText(this, "Ayuda", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.itemLogout:
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
                 builder.setTitle(R.string.textSesion);
                 builder.setMessage(R.string.textCerrarSesion);
@@ -254,25 +328,21 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     dialog.dismiss();
                 });
                 builder.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        setTitle(item.getTitle());
-        mDrawerLayout.closeDrawers();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(toggle.onOptionsItemSelected(item)){
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void sendPostulation(Postulation postulation) {
-
-        detailPostulation = new detailPostulationFragment();
+        if(typeUser.equals("Ciudadano")){
+            detailPostulation = new detailPostulationFullFragment();
+        }else{
+            detailPostulation = new detailPostulationFragment();
+        }
         Bundle bundleEnvio = new Bundle();
-        bundleEnvio.putSerializable("object", postulation);
+        bundleEnvio.putSerializable("postulation", postulation);
         detailPostulation.setArguments(bundleEnvio);
         getSupportFragmentManager().beginTransaction().replace(R.id.content, detailPostulation).addToBackStack(null).commit();
     }

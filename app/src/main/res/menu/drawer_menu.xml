@@ -12,15 +12,5 @@
             android:icon="@drawable/ic_baseline_account_circle_24"/>
     </group>
 
-    <item android:title="@string/title_sesion">
-        <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/signOut"
-                    android:title="@string/cerrar_sesion"
-                    android:icon="@drawable/ic_exit"/>
-            </group>
-        </menu>
-    </item>
 
 </menu>
