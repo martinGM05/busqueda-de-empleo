@@ -44,7 +44,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:layout_marginEnd="30dp"
-                    android:hint="Palabras clave por comas"
+                    android:hint="@string/Keywords_by_commas"
                     app:boxBackgroundMode="outline"
                     app:boxCornerRadiusTopEnd="10dp"
                     app:boxCornerRadiusTopStart="10dp"
@@ -127,7 +127,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="30dp"
                     android:background="@android:drawable/editbox_background"
-                    android:drawableLeft="@drawable/ic_location"
+                    android:drawableStart="@drawable/ic_location"
                     android:drawablePadding="16dp"
                     android:gravity="center_vertical"
                     android:hint="@string/inputDirection"

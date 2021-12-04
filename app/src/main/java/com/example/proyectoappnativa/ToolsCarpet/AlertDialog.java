@@ -2,6 +2,8 @@ package com.example.proyectoappnativa.ToolsCarpet;
 
 
 import android.app.Activity;
+import android.text.TextUtils;
+import android.widget.EditText;
 
 import com.example.proyectoappnativa.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -21,25 +23,14 @@ public class AlertDialog{
         builder.show();
     }
 
-    public static void alerta2(Activity context, String Message) {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
-        builder.setTitle(R.string.titleError);
-        builder.setMessage(Message);
+    public static void showAlertDialog(Activity registerActivity, String title, String message) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(registerActivity);
+        builder.setTitle(title);
+        builder.setMessage(message);
         builder.setPositiveButton(R.string.textOk, (dialog, which) -> {
             dialog.dismiss();
         });
         builder.show();
     }
-
-    public static void alertSignOut(Activity context, String Message){
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
-        builder.setTitle("Sesión");
-        builder.setMessage(Message);
-        builder.setPositiveButton(R.string.textOk, (dialog, which) -> {
-            dialog.dismiss();
-        });
-        builder.show();
-    }
-
 
 }

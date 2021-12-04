@@ -13,11 +13,13 @@ public class Postulation implements Serializable {
     private double lont;
     private List<String> postulantes;
     private List<String> keywords;
+    private List<String> postulantes_aceptados;
 
     public Postulation() {
     }
 
-    public Postulation(String id, String name, String image, String description, String company, double lat, double lont, List<String> postulantes, List<String> keywords) {
+    public Postulation(String id, String name, String image, String description, String company, double lat, double lont,
+                        List<String> postulantes, List<String> keywords, List<String> postulantes_aceptados) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -27,6 +29,7 @@ public class Postulation implements Serializable {
         this.company = company;
         this.postulantes = postulantes;
         this.keywords = keywords;
+        this.postulantes_aceptados = postulantes_aceptados;
     }
 
     public String getId() {
@@ -99,5 +102,13 @@ public class Postulation implements Serializable {
 
     public void setKeywords(List<String> keywords) {
         this.keywords = keywords;
+    }
+
+    public List<String> getPostulantes_aceptados() {
+        return postulantes_aceptados;
+    }
+
+    public void setPostulantes_aceptados(List<String> postulantes_aceptados) {
+        this.postulantes_aceptados = postulantes_aceptados;
     }
 }

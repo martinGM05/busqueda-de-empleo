@@ -31,45 +31,19 @@ public class Fcm extends FirebaseMessagingService {
 
         sharedPref = getSharedPreferences("loginData", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("loginCounter", true);
-        editor.putString("token", s);
+        editor.putBoolean(getString(R.string.loginCounter), true);
+        editor.putString(getString(R.string.tokenFCM), s);
         editor.apply();
-
-
-        //saveToken(s);
     }
 
-    /*
-        public void saveToken(String s){
-            SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
-            String idUser = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
-            firebase.saveToken(s, idUser);
-        }
-    */
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
         String from = remoteMessage.getFrom();
-
-        /*
-        Log.e("TAG", "Mensaje recibido de "+from);
-
-        if(remoteMessage.getNotification() != null){
-            Log.e("TAG", "Titulo: "+remoteMessage.getNotification().getTitle());
-            Log.e("TAG", "Body: "+remoteMessage.getNotification().getBody());
-        }
-        */
-
         if(remoteMessage.getData().size() > 0){
-
             String titulo = remoteMessage.getData().get("titulo");
             String detalle = remoteMessage.getData().get("detalle");
-
             mayorqueoreo(titulo, detalle);
-
-
-
         }
 
     }
@@ -84,7 +58,7 @@ public class Fcm extends FirebaseMessagingService {
         builder.setAutoCancel(true)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(titulo)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.logo_round)
                 .setContentText(detalle)
                 .setContentIntent(clickNoti())
                 .setContentInfo("Nuevo");

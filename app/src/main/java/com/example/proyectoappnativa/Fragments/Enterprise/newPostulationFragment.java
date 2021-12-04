@@ -12,6 +12,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -21,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
+import com.example.proyectoappnativa.Fragments.Peopple.PostulationFullFragment;
 import com.example.proyectoappnativa.ToolsCarpet.AlertDialog;
 import com.example.proyectoappnativa.Db.DbHelper;
 import com.example.proyectoappnativa.Models.Postulation;
@@ -46,6 +49,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -61,19 +65,18 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private GoogleMap mMap;
-
-    EditText editText;
-    FloatingActionButton fabSave, fabGallery, fabCamera;
-    TextInputEditText namePostulation, description, keywords;
-    fireService firebase = new fireService();
-    Task<DocumentSnapshot> user;
-    double lat=19.0413,lon=-98.2062;
-    CircleImageView imagePostulation;
-    int TOMAR_FOTO = 100;
-    int SELEC_IMAGEN = 200;
-    Uri imagenUri;
-    short type = 0, photo = 0;
-    Postulation dataPostulation = new Postulation();
+    private EditText editText;
+    private FloatingActionButton fabSave, fabGallery, fabCamera;
+    private TextInputEditText namePostulation, description, keywords;
+    private fireService firebase = new fireService();
+    private Task<DocumentSnapshot> user;
+    private double lat=19.0413,lon=-98.2062;
+    private CircleImageView imagePostulation;
+    private int TAKE_PHOTO = 1;
+    private int CHOOSE_IMAGE = 200;
+    private Uri imagenUri;
+    private short type = 0, photo = 0;
+    private Postulation dataPostulation = new Postulation();
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -83,15 +86,6 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment newPostulationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static newPostulationFragment newInstance(String param1, String param2) {
         newPostulationFragment fragment = new newPostulationFragment();
         Bundle args = new Bundle();
@@ -107,21 +101,15 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-
-
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View root = inflater.inflate(R.layout.fragment_new_postulation, container, false);
-
-
         Bundle dataPostulation = getArguments();
         Postulation postulation = null;
-
         editText= root.findViewById(R.id.edit_text);
         keywords = root.findViewById(R.id.keyWords);
         fabSave = root.findViewById(R.id.fabSavePostulation);
@@ -132,22 +120,22 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
         fabCamera = root.findViewById(R.id.fabPictureWithCamera);
 
         if(dataPostulation != null){
-            postulation = (Postulation) dataPostulation.getSerializable("dataPostulation");
+            postulation = (Postulation) dataPostulation.getSerializable(getString(R.string.dataPostulation));
             assignInformation(postulation);
             type = 1;
         }
 
-
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapPostulation);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
-        Places.initialize(this.getContext(), "AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE");
+        Places.initialize(this.requireContext(), getString(R.string.google_maps_key));
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 List<Place.Field> fieldList= Arrays.asList(Place.Field.ADDRESS
                         ,Place.Field.LAT_LNG, Place.Field.NAME);
-                Intent intent= new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(getContext());
+                Intent intent= new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(requireContext());
                 startActivityForResult(intent, 100);
             }
         });
@@ -173,7 +161,6 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
                 photo = 1;
             }
         });
-
         return root;
     }
 
@@ -181,13 +168,13 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
         namePostulation.setText(postulation.getName());
         description.setText(postulation.getDescription());
         postulation.getKeywords().forEach(keyword -> {
-            if(keywords.getText().toString().isEmpty()){
+            if(Objects.requireNonNull(keywords.getText()).toString().isEmpty()){
                 keywords.setText(keyword);
             }else{
                 keywords.setText(keywords.getText().toString()+","+keyword);
             }
         });
-        Glide.with(getActivity()).load(postulation.getImage()).into(imagePostulation);
+        Glide.with(requireActivity()).load(postulation.getImage()).into(imagePostulation);
         lat = postulation.getLat();
         lon = postulation.getLont();
         dataPostulation = postulation;
@@ -198,27 +185,24 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK && requestCode == SELEC_IMAGEN){
+        if(resultCode == Activity.RESULT_OK && requestCode == CHOOSE_IMAGE){
             imagenUri = data.getData();
             imagePostulation.setImageURI(imagenUri);
-        }else if(resultCode == Activity.RESULT_OK && requestCode == 1){
+        }else if(resultCode == Activity.RESULT_OK && requestCode == TAKE_PHOTO){
             Bundle extras = data.getExtras();
-            Bitmap imgBitmap = (Bitmap) extras.get("data");
+            Bitmap imgBitmap = (Bitmap) extras.get(getString(R.string.data));
             imagenUri = getImageUri(requireContext(), imgBitmap);
             imagePostulation.setImageBitmap(imgBitmap);
         }
-
-
         if(requestCode==100 && resultCode== RESULT_OK){
             Place place = Autocomplete.getPlaceFromIntent(data);
             editText.setText(place.getAddress());
-            //Toast.makeText(getContext(),String.valueOf(place.getLatLng().longitude),Toast.LENGTH_SHORT).show();
-            lat=place.getLatLng().latitude;
-            lon=place.getLatLng().longitude;
+            lat = Objects.requireNonNull(place.getLatLng()).latitude;
+            lon = Objects.requireNonNull(place.getLatLng()).longitude;
             mMap.clear();
             LatLng position = new LatLng(lat,lon);
             mMap.setMinZoomPreference(15);
-            mMap.addMarker(new MarkerOptions().position(position).title(""+place.getAddress())
+            mMap.addMarker(new MarkerOptions().position(position).title(place.getAddress())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
         }
@@ -231,16 +215,14 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
         LatLng position = new LatLng(lat,lon);
         mMap.addMarker(new MarkerOptions().position(position).title(""));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
-
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(latLng);
-                markerOptions.title(""+latLng.latitude + " ; "+ latLng.longitude);
+                markerOptions.title(latLng.latitude + " ; "+ latLng.longitude);
                 lat = latLng.latitude;
                 lon = latLng.longitude;
-                //Toast.makeText(getContext(),""+String.valueOf(latLng),Toast.LENGTH_SHORT).show();
                 googleMap.clear();
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 googleMap.addMarker(markerOptions);
@@ -250,11 +232,20 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
     
 
     public void savePostulation(short type){
+        for(EditText editText : new EditText[]{namePostulation, description, keywords}){
+            if(TextUtils.isEmpty(editText.getText().toString())){
+                editText.setError(getString(R.string.emptyField));
+                return;
+            }
+        }
         if(type == 0){
+            if(imagenUri == null){
+                AlertDialog.showAlertDialog(requireActivity(), getString(R.string.titleError), getString(R.string.insertImage));
+                return;
+            }
             Postulation postulation = new Postulation();
-            // GET id for sharedPreferences
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("loginData", getContext().MODE_PRIVATE);
-            String id = sharedPreferences.getString("userId", "");
+            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.loginData), Context.MODE_PRIVATE);
+            String id = sharedPreferences.getString(getString(R.string.userId), "");
             DbHelper dbHelper = new DbHelper(getContext());
             List<User> userData = dbHelper.getUserData(id);
             if(userData.size() > 0) {
@@ -262,27 +253,23 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
                     postulation.setCompany(user.getName());
                 }
             }
-            if(TextUtils.isEmpty(namePostulation.getText()) || TextUtils.isEmpty(description.getText())){
-                AlertDialog.alertEmptyFields(getActivity());
-            }else{
-                postulation.setName(String.valueOf(namePostulation.getText()));
-                postulation.setDescription(String.valueOf(description.getText()));
-                postulation.setLat(lat);
-                postulation.setLont(lon);
-                String[] categories = keywords.getText().toString().split(",");
-                List<String> keywordsList = Arrays.asList(categories);
-                postulation.setKeywords(keywordsList);
-                firebase.createDocumentPostulation(getActivity(), postulation, imagenUri);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new PostulationFragment()).commit();
-            }
+            postulation.setName(String.valueOf(namePostulation.getText()));
+            postulation.setDescription(String.valueOf(description.getText()));
+            postulation.setLat(lat);
+            postulation.setLont(lon);
+            String[] categories = Objects.requireNonNull(keywords.getText()).toString().split(",");
+            List<String> keywordsList = Arrays.asList(categories);
+            postulation.setKeywords(keywordsList);
+            firebase.createDocumentPostulation(requireActivity() ,postulation, imagenUri);
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new PostulationFragment()).commit();
+
         }else{
             dataPostulation.setName(String.valueOf(namePostulation.getText()));
             dataPostulation.setDescription(String.valueOf(description.getText()));
-
             dataPostulation.setLat(lat);
             dataPostulation.setLont(lon);
-            firebase.updatePostulation(getActivity(), dataPostulation, imagenUri, photo);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new PostulationFragment()).commit();
+            firebase.updatePostulation(requireActivity(), dataPostulation, imagenUri, photo);
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content, new PostulationFragment()).commit();
         }
     }
 
@@ -290,24 +277,21 @@ public class newPostulationFragment extends Fragment implements OnMapReadyCallba
     public void tomarFoto(){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(intent.resolveActivity(requireActivity().getPackageManager()) != null){
-            startActivityForResult(intent, 1);
+            startActivityForResult(intent, TAKE_PHOTO);
         }
     }
 
     @SuppressWarnings("deprecation")
     public void seleccionaImagen(){
         Intent galeria = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        startActivityForResult(galeria, SELEC_IMAGEN);
+        startActivityForResult(galeria, CHOOSE_IMAGE);
     }
 
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, getString(R.string.title), null);
         return Uri.parse(path);
     }
-
-
-
 }

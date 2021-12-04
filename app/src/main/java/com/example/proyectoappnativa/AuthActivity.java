@@ -3,42 +3,52 @@ package com.example.proyectoappnativa;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.proyectoappnativa.Db.DbHelper;
+import com.example.proyectoappnativa.Db.DbPostulationAcepted;
+import com.example.proyectoappnativa.Db.DbUsers;
 import com.example.proyectoappnativa.Models.User;
 import com.example.proyectoappnativa.ToolsCarpet.AlertDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import com.example.proyectoappnativa.Firebase.fireService;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class AuthActivity extends AppCompatActivity {
 
-    TextInputEditText emailLogin;
-    TextInputEditText passwordLogin;
-    Button btnEntrar;
-    TextView tView;
+    private TextInputEditText emailLogin;
+    private TextInputEditText passwordLogin;
+    private Button btnEntrar;
+    private TextView tView;
+    private fireService firebase = new fireService();
+    private String idUser;
+    private User user = new User();
+    private Intent intent;
 
-    fireService firebase = new fireService();
-    String idUser;
-    User user = new User();
-    Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_auth);
         Tools.setSystemBarLight(this);
         Tools.setSystemBarColor(this, R.color.white);
-
         emailLogin = findViewById(R.id.inputName);
         passwordLogin = findViewById(R.id.txtPassword);
         btnEntrar = findViewById(R.id.btnEntrar);
@@ -60,46 +70,47 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     void checkUserStatus() {
-        SharedPreferences sharedPreferences = getSharedPreferences("loginData", MODE_PRIVATE);
-        idUser = sharedPreferences.getString("userId", String.valueOf(MODE_PRIVATE));
-        if (!idUser.equals("0")) {
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.loginData), MODE_PRIVATE);
+        idUser = sharedPreferences.getString(getString(R.string.userId), String.valueOf(MODE_PRIVATE));
 
-            // verficar si es ciudadano o empresa
-            DbHelper dbHelper = new DbHelper(this);
-            List<User> userData = dbHelper.getUserData(idUser);
-            if (userData.size() > 0) {
-                user = userData.get(0);
-                intent = new Intent(this, HomeActivity.class);
-                intent.putExtra("typeUser", user.getType());
-                startActivity(intent);
-                /*
-                if (user.getType().equals("Ciudadano")) {
-                    //Toast.makeText(this, user.getType(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(this, HomePeoppleActivity.class));
-                } else {
-                    //Toast.makeText(this, user.getType(), Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(this, HomeActivity.class));
+        DbHelper dbHelper = new DbHelper(this);
+        DbUsers dbUsers = new DbUsers(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if (!idUser.equals("0")) {
+                List<User> userData = dbHelper.getUserData(idUser);
+                if (userData.size() > 0) {
+                    user = userData.get(0);
+                    intent = new Intent(this, HomeActivity.class);
+                    intent.putExtra(getString(R.string.typeUser), user.getType());
+                    startActivity(intent);
                 }
 
-                 */
-            }
-
-
-            //startActivity(new Intent(this, HomeActivity.class));
         }
     }
 
 
     private void loginUser(){
-        String email = emailLogin.getText().toString();
-        String password = passwordLogin.getText().toString();
-        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password) ){
-            AlertDialog.alertEmptyFields(this);
-        }else{
+        if(Tools.isConnection(this)){
+            for(EditText editText : new EditText[]{emailLogin, passwordLogin}){
+                if(TextUtils.isEmpty(editText.getText().toString())){
+                    editText.setError(getString(R.string.emptyField));
+                    return;
+                }
+            }
+            String email = Objects.requireNonNull(emailLogin.getText()).toString();
+            String password = Objects.requireNonNull(passwordLogin.getText()).toString();
+            if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                AlertDialog.showAlertDialog(this, getString(R.string.validation), getString(R.string.invalidEmail));
+                return;
+            }else if(password.length() < 6){
+                AlertDialog.showAlertDialog(this, getString(R.string.validation), getString(R.string.validationPassword));
+                return;
+            }
+            firebase.Auth(this, email, password);
             emailLogin.setText("");
             passwordLogin.setText("");
-            firebase.Auth(this, email, password);
+        }else{
+            Snackbar.make(findViewById(R.id.btnEntrar), getString(R.string.dont_conection), Snackbar.LENGTH_LONG).show();
         }
     }
-
 }

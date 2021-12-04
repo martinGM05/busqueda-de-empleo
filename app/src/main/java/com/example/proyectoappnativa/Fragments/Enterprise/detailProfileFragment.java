@@ -1,4 +1,4 @@
-package com.example.proyectoappnativa.Fragments;
+package com.example.proyectoappnativa.Fragments.Enterprise;
 
 import android.os.Bundle;
 
@@ -36,15 +36,6 @@ public class detailProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DetailProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static detailProfileFragment newInstance(String param1, String param2) {
         detailProfileFragment fragment = new detailProfileFragment();
         Bundle args = new Bundle();
@@ -54,9 +45,8 @@ public class detailProfileFragment extends Fragment {
         return fragment;
     }
 
-    TextView textName, textDescription, textEmail;
-    CircleImageView ivPhoto;
-    FloatingActionButton fab;
+    private TextView textName, textDescription, textEmail;
+    private CircleImageView ivPhoto;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,19 +60,18 @@ public class detailProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_detail_profile, container, false);
 
-        textName =  (TextView) root.findViewById(R.id.idNameProfile);
-        textEmail = (TextView) root.findViewById(R.id.idEmailProfile);
-        textDescription =  (TextView) root.findViewById(R.id.idDescriptionProfile);
-        ivPhoto = (CircleImageView) root.findViewById(R.id.imagePostulationDetail);
+        textName = root.findViewById(R.id.idNameProfile);
+        textEmail = root.findViewById(R.id.idEmailProfile);
+        textDescription = root.findViewById(R.id.idDescriptionProfile);
+        ivPhoto = root.findViewById(R.id.imagePostulationDetail);
 
         Bundle objectProfile = getArguments();
         User user = null;
 
         if(objectProfile != null){
-            user = (User) objectProfile.getSerializable("objectProfile");
+            user = (User) objectProfile.getSerializable(getString(R.string.objectProfile));
             assignInformation(user);
         }
         return root;

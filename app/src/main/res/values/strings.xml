@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">proyectoAppNativa</string>
+    <string name="app_name">Workhere</string>
 
     <!-- Fields Common -->
     <string name="email">Correo</string>
@@ -44,7 +44,6 @@
     <string name="textResetPasswordCancel">Cancelar</string>
 
     <!-- Register -->
-    <string name="textRegisterWith">ó</string>
     <string name="textReturn">Regresar</string>
     <string name="textHaveUser">¿Ya tienes una cuenta?</string>
     <string name="textBtnRegister">Registrarse</string>
@@ -61,7 +60,6 @@
     <string name="postulaciones">Postulaciones</string>
 
     <!-- Alertas -->
-    <string name="textSesion">"Sesión"</string>
     <string name="textCerrarSesion">"¿Seguro que quieres cerrar sesión?"</string>
     <string name="userUpdated">"Usuario Actualizado"</string>
 
@@ -69,14 +67,95 @@
     <string name="textErrorImagen">"Error al cargar la imagen"</string>
 
     <!-- KEY MAPS -->
-    <string name="android_sdk_places_api_key">AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE</string>
-    <string name="label_from">Direccion Origen</string>
-    <string name="label_to">Direccion Destino</string>
+    <string name="label_from">Dirección Origen</string>
+    <string name="label_to">Dirección Destino</string>
     <string name="btn_change">Modificar</string>
-    <string name="google_maps_key">AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE</string>
+    <string name="google_maps_key" translatable="false">AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE</string>
     <string name="inputDirection">Ingrese la dirección</string>
-    <string name="apiKeyGoogleMaps">AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE</string>
     <string name="addApplications">Te has postulado</string>
+    <string name="urlMaps" translatable="false"><![CDATA[https://maps.googleapis.com/maps/api/directions/json?key=AIzaSyC0PZVZz6Pxy74Hal64-VtZSDOyYrqTMEE&origin=]]></string>
+    <string name="destinationMaps" translatable="false"><![CDATA[&destination=]]></string>
+    <string name="accepted">Aceptados</string>
+    <string name="textPhone">Teléfono</string>
+    <string name="numPhone">Número de Teléfono</string>
+    <string name="choose_image">Seleccionar Imagen</string>
+    <string name="take_photo">Tomar Foto</string>
+    <string name="work">Trabajo</string>
+    <string name="To_accept">Aceptar</string>
+    <string name="content">Contenido</string>
+    <string name="description">Descripción</string>
+    <string name="Keywords_by_commas">Palabras clave por comas</string>
+    <string name="search_work">Buscar Trabajo</string>
+    <string name="select_the_language">Selecciona el idioma:</string>
+    <string name="spain">Español</string>
+    <string name="english">Ingles</string>
+    <string name="french">Frances</string>
+    <string name="save">Guardar</string>
+    <string name="postulation">Postulación</string>
+    <string name="call">Llamar</string>
+    <string name="accepted_applications">Postulaciones Aceptadas</string>
+    <string name="settings">Ajustes</string>
+    <string name="dont_conection">No hay conexión a internet</string>
+    <string name="loginData" translatable="false">loginData</string>
+    <string name="loginCounter" translatable="false">loginCounter</string>
+    <string name="userId" translatable="false">userId</string>
+    <string name="Users" translatable="false">Usuarios</string>
+    <string name="tokenFCM" translatable="false">token</string>
+    <string name="typeUser" translatable="false">typeUser</string>
+    <string name="type" translatable="false">type</string>
+    <string name="Account_not_exist">Esta cuenta no existe</string>
+    <string name="UsuariosFirebase" translatable="false">Usuarios</string>
+    <string name="PostulacionesFirebase" translatable="false">Postulaciones</string>
+    <string name="FotosURL" translatable="false">Fotos/</string>
+    <string name="id" translatable="false">id</string>
+    <string name="image" translatable="false">image</string>
+    <string name="jobCreated">Trabajo creado</string>
+    <string name="emailFirebase" translatable="false">email</string>
+    <string name="email_exists">El email ya existe</string>
+    <string name="postulantesFirebaseField" translatable="false">postulantes</string>
+    <string name="postulantesAceptedFirebase" translatable="false">postulantes_aceptados</string>
+    <string name="companyFirebaseField" translatable="false">company</string>
+    <string name="nameFirebaseField" translatable="false">name</string>
+    <string name="descriptionFirebaseField" translatable="false">description</string>
+    <string name="imageFirebaseField" translatable="false">imageURL</string>
+    <string name="latitude" translatable="false">lat</string>
+    <string name="longitude" translatable="false">lont</string>
+    <string name="imageField" translatable="false">image</string>
+    <string name="postulationUpdated">Postulación actualizada</string>
+    <string name="Applied_This_Offer">Ya has postulado a esta oferta</string>
+    <string name="No_connection">No tiene conexión, favor de conectarse a internet</string>
+    <string name="data">data</string>
+    <string name="title">Title</string>
+    <string name="emptyField">Campo vacío</string>
+    <string name="insertImage">Inserte una imagen</string>
+    <string name="validation">Validación</string>
+    <string name="invalidEmail">Email no válido</string>
+    <string name="invalidPhone">Teléfono no válido</string>
+    <string name="validationPassword">La contraseña tiene que ser mayor de 5 caracteres</string>
+    <string name="SettingsShared">Settings</string>
+    <string name="My_LanguagueShared">My_Languague</string>
+    <string name="CiudadanoType">Ciudadano</string>
+    <string name="postulationBundle">postulation</string>
+    <string name="objectProfile">objectProfile</string>
+    <string name="codeSpain">es</string>
+    <string name="codeEnglish">en</string>
+    <string name="codeFrench">fr</string>
+    <string name="postulacionens_aceptadas">postulaciones_aceptadas</string>
+    <string name="dont_jobExist">No existe el trabajo</string>
+    <string name="dont_job_hasAccepted">Ningún trabajo te ha aceptado</string>
+    <string name="routes">routes</string>
+    <string name="legs">legs</string>
+    <string name="steps">steps</string>
+    <string name="polyline">polyline</string>
+    <string name="points">points</string>
+    <string name="dataPostulation">dataPostulation</string>
+    <string name="idPostulation">idPostulation</string>
+    <string name="dont_postulates">No tienes ningun postulante</string>
+    <string name="jobAceptNoti">Has sido aceptado en el trabajo de  </string>
+    <string name="keyFCM">key=AAAAlAHvnnc:APA91bEtbYrtvpxTOE5rDBgwLnQrVJKoXFVsNpl1cMoL200upzbU_kbPZpOM2LPfPT5Oew6uL-7G6B7MsvPFJzAfTzsllB26rSAdtQ0aDSwm1O1nD5o3tbNk54215OVKj5VDkzLQpe2i</string>
+    <string name="notExist">No existe</string>
+    <string name="permiseToCall">Favor de dar permisos de llamada</string>
+    <string name="insertLatLon">Inserte las coordenadas</string>
 
 
 </resources>

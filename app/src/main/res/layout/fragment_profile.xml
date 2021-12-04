@@ -11,44 +11,42 @@
     <Button
         android:id="@+id/btnSelectImage"
         style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="149dp"
-        android:layout_height="56dp"
+        android:layout_width="174dp"
+        android:layout_height="57dp"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/secondaryColor"
-        android:text="Seleccionar Imagen"
+        android:text="@string/choose_image"
         android:textAlignment="center"
         app:icon="@drawable/ic_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnTomarFoto"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textPhoneEdit"
+        app:layout_constraintVertical_bias="0.272" />
 
     <Button
         android:id="@+id/btnTomarFoto"
         style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="127dp"
-        android:layout_height="56dp"
+        android:layout_width="123dp"
+        android:layout_height="53dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/secondaryColor"
-        android:text="Tomar Foto"
+        android:text="@string/take_photo"
         android:textAlignment="center"
         app:elevation="2dp"
         app:icon="@drawable/ic_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnSelectImage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textPhoneEdit"
+        app:layout_constraintVertical_bias="0.268" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/cvImagePostulation"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="105dp"
+        android:layout_height="112dp"
         android:layout_gravity="center"
         android:layout_marginStart="150dp"
         android:layout_marginTop="108dp"
@@ -65,9 +63,9 @@
         android:id="@+id/textInputLayout1"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="67dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="25dp"
         android:hint="@string/name"
         app:boxBackgroundMode="outline"
@@ -91,18 +89,16 @@
         android:layout_width="0dp"
         android:layout_height="67dp"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="25dp"
         android:hint="@string/textDescription"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusTopEnd="10dp"
         app:boxCornerRadiusTopStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout1"
-        app:layout_constraintVertical_bias="0.055">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout1">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputDescription"
@@ -112,10 +108,36 @@
             android:fontFamily="@font/poppinsmedium" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textPhoneEdit"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="25dp"
+        android:hint="@string/numPhone"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputPhoneEdit"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_baseline_text"
+            android:fontFamily="@font/poppinsmedium" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSaveProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_margin="16dp"
         android:layout_marginEnd="24dp"
         android:backgroundTint="@color/primaryColor"
@@ -124,7 +146,6 @@
         app:borderWidth="0dp"
         app:fabSize="auto"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="TODO" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

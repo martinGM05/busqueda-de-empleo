@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.proyectoappnativa.Models.Offline.PostulationOff;
 import com.example.proyectoappnativa.R;
 
 import java.util.ArrayList;
@@ -70,8 +71,10 @@ public class AdapterPostulation extends RecyclerView.Adapter<AdapterPostulation.
         }else{
             listPostulations.clear();
             listPostulations.addAll(originalItems.stream()
-                    .filter(postulation -> postulation.getName().toLowerCase().contains(strSearch.toLowerCase()))
+                    .filter(postulation -> postulation.getKeywords().stream()
+                            .anyMatch(keyword -> keyword.toLowerCase().contains(strSearch.toLowerCase())))
                     .collect(Collectors.toList()));
+
             /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
                 listPostulations.clear();
                 List<Postulation> collect = originalItems.stream()
@@ -87,7 +90,7 @@ public class AdapterPostulation extends RecyclerView.Adapter<AdapterPostulation.
                          listPostulations.add(i);
                     }
                 }
-            }*/        
+            }*/
         }
         notifyDataSetChanged();
     }

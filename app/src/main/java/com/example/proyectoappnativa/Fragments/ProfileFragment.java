@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.proyectoappnativa.Tools;
 import com.example.proyectoappnativa.ToolsCarpet.AlertDialog;
 import com.example.proyectoappnativa.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -40,6 +42,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
+import java.util.Objects;
 
 import com.example.proyectoappnativa.Db.DbHelper;
 import com.example.proyectoappnativa.Firebase.fireService;
@@ -96,7 +99,7 @@ public class ProfileFragment extends Fragment {
 
     String idUser;
     FloatingActionButton fab;
-    TextInputEditText inputName, inputDescription;
+    TextInputEditText inputName, inputDescription, inputPhone;
     Button btnTomarFoto, btnSeleccionarImagen;
     CircleImageView ivFoto;
     Uri imagenUri;
@@ -106,23 +109,20 @@ public class ProfileFragment extends Fragment {
     RequestQueue request;
     int TOMAR_FOTO = 100;
     int SELEC_IMAGEN = 200;
+    private boolean online;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-       // return inflater.inflate(R.layout.fragment_profile, container, false);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
-
 
         fab = root.findViewById(R.id.fabSaveProfile);
         inputName = root.findViewById(R.id.inputName);
         inputDescription = root.findViewById(R.id.inputDescription);
-
+        inputPhone = root.findViewById(R.id.inputPhoneEdit);
         btnTomarFoto = root.findViewById(R.id.btnTomarFoto);
         btnSeleccionarImagen = root.findViewById(R.id.btnSelectImage);
-
         ivFoto = root.findViewById(R.id.cvImagePostulation);
         request = Volley.newRequestQueue(requireContext());
 
@@ -163,27 +163,11 @@ public class ProfileFragment extends Fragment {
     }
 
     public void checkUserStatus(){
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences("loginData", Context.MODE_PRIVATE);
-        String id = sharedPreferences.getString("userId", String.valueOf(Activity.MODE_PRIVATE));
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences(getString(R.string.loginData), Context.MODE_PRIVATE);
+        String id = sharedPreferences.getString(getString(R.string.userId), String.valueOf(Activity.MODE_PRIVATE));
         idUser = id;
         if(!id.isEmpty()){
             getInfoUserOffline(id);
-/*            if(isConnection()){
-                getInfoUser(id);
-            }else{
-                getInfoUserOffline(id);
-            }  */
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isConnection(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if(networkInfo != null && networkInfo.isConnected()){
-            return true;
-        }else{
-            return false;
         }
     }
 
@@ -201,23 +185,6 @@ public class ProfileFragment extends Fragment {
         startActivityForResult(galeria, SELEC_IMAGEN);
     }
 
-    private void cargarImage(String urlImage){
-        String url = urlImage;
-        url = url.replace(" ","%20");
-        ImageRequest imageRequest = new ImageRequest(url, new Response.Listener<Bitmap>() {
-            @Override
-            public void onResponse(Bitmap response) {
-                ivFoto.setImageBitmap(response);
-            }
-        }, 0, 0, ImageView.ScaleType.CENTER, null, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), R.string.textErrorImagen, Toast.LENGTH_LONG);
-            }
-        });
-        request.add(imageRequest);
-    }
-
     @SuppressWarnings("deprecation")
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -227,31 +194,44 @@ public class ProfileFragment extends Fragment {
             ivFoto.setImageURI(imagenUri);
         }else if(resultCode == Activity.RESULT_OK && requestCode == 1){
             Bundle extras = data.getExtras();
-            Bitmap imgBitmap = (Bitmap) extras.get("data");
+            Bitmap imgBitmap = (Bitmap) extras.get(getString(R.string.data));
             imagenUri = getImageUri(requireContext(), imgBitmap);
             ivFoto.setImageBitmap(imgBitmap);
         }
     }
 
+
+
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, getString(R.string.title), null);
         return Uri.parse(path);
     }
 
     public void updateUser(){
-        String name = inputName.getText().toString();
-        String description = inputDescription.getText().toString();
-        if(TextUtils.isEmpty(name) || TextUtils.isEmpty(description)){
-            AlertDialog.alertEmptyFields(getActivity());
+        String name = Objects.requireNonNull(inputName.getText()).toString();
+        String description = Objects.requireNonNull(inputDescription.getText()).toString();
+
+        for(EditText editText : new EditText[]{inputName, inputDescription, inputPhone}){
+            if(TextUtils.isEmpty(editText.getText().toString())){
+                editText.setError(getString(R.string.emptyField));
+                return;
+            }
+        }
+        if(imagenUri == null){
+            AlertDialog.showAlertDialog(requireActivity(), getString(R.string.titleError), getString(R.string.insertImage));
+            return;
+        }
+        if (Tools.isConnection(requireActivity())){
+            try {
+                firebase.updateUser(getActivity(), idUser, name, usuario.getEmail(),description, usuario.getType(),imagenUri);
+                Snackbar.make(requireActivity().findViewById(R.id.content), R.string.userUpdated, Snackbar.LENGTH_LONG).setBackgroundTint(requireContext().getColor(R.color.secondaryDarkColor)).show();
+            }catch (Exception err){
+                Snackbar.make(requireActivity().findViewById(R.id.content), R.string.titleError, Snackbar.LENGTH_LONG).setBackgroundTint(requireContext().getColor(R.color.secondaryDarkColor)).show();
+            }
         }else{
-          try {
-              firebase.updateUser(getActivity(), idUser, name, usuario.getEmail(),description, usuario.getType(),imagenUri);
-              Snackbar.make(requireActivity().findViewById(R.id.content), R.string.userUpdated, Snackbar.LENGTH_LONG).setBackgroundTint(getContext().getColor(R.color.secondaryDarkColor)).show();
-          }catch (Exception err){
-              Snackbar.make(requireActivity().findViewById(R.id.content), R.string.titleError, Snackbar.LENGTH_LONG).setBackgroundTint(getContext().getColor(R.color.secondaryDarkColor)).show();
-          }
+            Snackbar.make(requireActivity().findViewById(R.id.content), R.string.No_connection, Snackbar.LENGTH_LONG).setBackgroundTint(requireContext().getColor(R.color.secondaryDarkColor)).show();
         }
     }
 
@@ -260,11 +240,11 @@ public class ProfileFragment extends Fragment {
         List<User> userData = dbHelper.getUserData(id);
         if(userData.size() > 0) {
             for (User user : userData) {
-               inputName.setText(user.getName());
-               inputDescription.setText(user.getDescription());
-               usuario.setType(user.getType());
-               usuario.setEmail(user.getEmail());
-              // cargarImage(user.getImageURL());
+                inputName.setText(user.getName());
+                inputDescription.setText(user.getDescription());
+                inputPhone.setText(user.getPhone());
+                usuario.setType(user.getType());
+                usuario.setEmail(user.getEmail());
             }
         }
     }

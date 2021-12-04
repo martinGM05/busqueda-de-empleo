@@ -29,7 +29,6 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="6dp"
-                android:src="@mipmap/ic_launcher"
                 app:civ_border_color="@color/black"
                 app:civ_border_width="3dp"
                 app:layout_constraintEnd_toStartOf="@+id/namePostulationDetail"
@@ -43,7 +42,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
         android:text="@string/hello_blank_fragment"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imagePostulationDetail"
         app:layout_constraintTop_toTopOf="parent" />

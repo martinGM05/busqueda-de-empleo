@@ -9,18 +9,20 @@ public class User implements Serializable {
     private String email;
     private String type;
     private String description;
+    private String phone;
     private String imageURL;
 
 
     public User() {
     }
 
-    public User(String id, String name, String email, String type, String description, String imageURL) {
+    public User(String id, String name, String email, String type, String description, String phone, String imageURL) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.type = type;
         this.description = description;
+        this.phone = phone;
         this.imageURL = imageURL;
     }
 
@@ -54,6 +56,14 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">proyectoAppNativa</string>
+    <string name="app_name">Workhere</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="charge">Charging</string>
-    <string name="name">name</string>
+    <string name="name">Name</string>
     <string name="spinner">Choose what type of user you are</string>
     <string name="userCreated">User created successfully</string>
     <string name="userCreatedError">Error creating user</string>
@@ -27,7 +27,6 @@
     <string name="textResetPasswordDescription">Enter your email and we will send you a link to reset your password</string>
     <string name="textResetPasswordOk">Send</string>
     <string name="textResetPasswordCancel">Cancel</string>
-    <string name="textRegisterWith">ó</string>
     <string name="textReturn">Go back</string>
     <string name="textHaveUser">Do you already have an account?</string>
     <string name="textBtnRegister">Check in</string>
@@ -35,5 +34,43 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
+    <string name="cerrar_sesion">Logout</string>
+    <string name="title_sesion">Session</string>
+    <string name="perfil">Profile</string>
+    <string name="postulaciones">Applications</string>
+    <string name="textCerrarSesion">Are you sure you want to log out?</string>
+    <string name="userUpdated">User Updated</string>
+    <string name="textErrorImagen">Image loading failed</string>
+    <string name="label_from">Origin Address</string>
+    <string name="label_to">Destination Address</string>
+    <string name="btn_change">Modify</string>
+    <string name="inputDirection">Enter the address</string>
+    <string name="addApplications">You have applied</string>
+    <string name="accepted">Accepted</string>
+    <string name="textPhone">Phone</string>
+    <string name="numPhone">Phone number</string>
+    <string name="choose_image">Select Image</string>
+    <string name="take_photo">Take photo</string>
+    <string name="work">Job</string>
+    <string name="To_accept">To accept</string>
+    <string name="content">Content</string>
+    <string name="description">Description</string>
+    <string name="Keywords_by_commas">Keywords by commas</string>
+    <string name="search_work">Search for a job</string>
+    <string name="select_the_language">Select the language:</string>
+    <string name="spain">Spanish</string>
+    <string name="english">English</string>
+    <string name="french">French</string>
+    <string name="save">Save</string>
+    <string name="postulation">Postulation</string>
+    <string name="call">To call</string>
+    <string name="accepted_applications">Accepted Applications</string>
+    <string name="settings">Settings</string>
+    <string name="dont_conection">There is no Internet conection</string>
+    <string name="Account_not_exist">This account does not exist</string>
+    <string name="jobCreated">Job created</string>
+    <string name="email_exists">The email already exists</string>
+    <string name="postulationUpdated">Updated application</string>
+    <string name="Applied_This_Offer">You have already applied for this offer</string>
 
 </resources>

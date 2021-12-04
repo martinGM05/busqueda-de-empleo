@@ -1,7 +1,9 @@
-package com.example.proyectoappnativa.Fragments;
+package com.example.proyectoappnativa.Fragments.Peopple;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,18 +15,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.proyectoappnativa.Adapters.AdapterPostulation;
+import com.example.proyectoappnativa.Adapters.Offline.AdapterPostulationOf;
+import com.example.proyectoappnativa.Db.DbHelper;
+import com.example.proyectoappnativa.Db.DbPostulation;
+import com.example.proyectoappnativa.Models.Offline.PostulationOff;
 import com.example.proyectoappnativa.Models.Postulation;
 import com.example.proyectoappnativa.Firebase.fireService;
 import com.example.proyectoappnativa.Interfaces.IComunicFragmentPostulation;
 import com.example.proyectoappnativa.R;
+import com.example.proyectoappnativa.Tools;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,15 +55,6 @@ public class PostulationFullFragment extends Fragment implements SearchView.OnQu
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PostulationFullFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static PostulationFullFragment newInstance(String param1, String param2) {
         PostulationFullFragment fragment = new PostulationFullFragment();
         Bundle args = new Bundle();
@@ -82,19 +82,25 @@ public class PostulationFullFragment extends Fragment implements SearchView.OnQu
     private Activity activity;
     private IComunicFragmentPostulation interfaceComunicFragment;
     private SearchView svSearch;
-
+    String keys = "";
+    private ArrayList<PostulationOff> listPostulationsOff = new ArrayList<>();
+    private AdapterPostulationOf adapterOff;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_postulation_full, container, false);
-
         svSearch = root.findViewById(R.id.svPostulation);
         listPostulations = new ArrayList<>();
         recycler = root.findViewById(R.id.recyclePostulations);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        getPostulations();
+        if(Tools.isConnection(requireActivity())){
+            getPostulations();
+        }else{
+            getPostulationOffline();
+        }
+
         initListener();
         return root;
     }
@@ -108,23 +114,69 @@ public class PostulationFullFragment extends Fragment implements SearchView.OnQu
         }
     }
 
+    private void getPostulationOffline(){
+        DbHelper dbHelper = new DbHelper(getContext());
+        List<PostulationOff> prueba = dbHelper.getPostulationsData();
+        for(PostulationOff postulation : prueba){
+            listPostulationsOff.add(postulation);
+        }
+        adapterOff = new AdapterPostulationOf(listPostulationsOff, requireActivity());
+        recycler.setAdapter(adapterOff);
+    }
+
     private void getPostulations() {
-        dataPostulations = firebase.getPostulations();
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(getString(R.string.loginData), Context.MODE_PRIVATE);
+        String idUser = sharedPreferences.getString(getString(R.string.userId), String.valueOf(Context.MODE_PRIVATE));
+
+        DbPostulation dbPostulation = new DbPostulation(requireActivity());
+        SQLiteDatabase db = dbPostulation.getWritableDatabase();
+        dbPostulation.onUpgradePostulationDb(db);
+
+        dataPostulations = firebase.getPostulations(requireActivity());
         dataPostulations.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Postulation postulation = document.toObject(Postulation.class);
-                        listPostulations.add(postulation);
+                        //Toast.makeText(requireActivity(), postulation.getName(), Toast.LENGTH_SHORT).show();
+                        if(postulation.getPostulantes_aceptados() != null){
+                            if(!postulation.getPostulantes_aceptados().contains(idUser)){
+                                listPostulations.add(postulation);
+                                for(int i = 0; i < postulation.getKeywords().size(); i++){
+                                    keys += postulation.getKeywords().get(i);
+                                    if(i != postulation.getKeywords().size() - 1){
+                                        keys += ",";
+                                    }
+                                }
+                                long uid = dbPostulation.insertPostulation(
+                                        postulation.getId(),
+                                        postulation.getName(),
+                                        postulation.getCompany(),
+                                        postulation.getDescription(),
+                                        keys);
+                            }
+                        }else{
+                            listPostulations.add(postulation);
+                            for(int i = 0; i < postulation.getKeywords().size(); i++){
+                                keys += postulation.getKeywords().get(i);
+                                if(i != postulation.getKeywords().size() - 1){
+                                    keys += ",";
+                                }
+                            }
+                            long uid = dbPostulation.insertPostulation(
+                                    postulation.getId(),
+                                    postulation.getName(),
+                                    postulation.getCompany(),
+                                    postulation.getDescription(),
+                                    keys);
+                        }
                     }
                     adapter = new AdapterPostulation(listPostulations, getActivity());
                     recycler.setAdapter(adapter);
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //Toast.makeText(getContext(), "Selecciona: "+listPostulations.get(recycler.getChildAdapterPosition(v)).getName(), Toast.LENGTH_LONG).show();
-                            //firebase.getApplicationsFirebase(listPostulations.get(recycler.getChildAdapterPosition(v)).getId());
                             interfaceComunicFragment.sendPostulation(listPostulations.get(recycler.getChildAdapterPosition(v)));
                         }
                     });
@@ -144,7 +196,11 @@ public class PostulationFullFragment extends Fragment implements SearchView.OnQu
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        adapter.filter(newText);
+        if(Tools.isConnection(requireActivity())){
+            adapter.filter(newText);
+        }else{
+            adapterOff.filter(newText);
+        }
         return false;
     }
 }

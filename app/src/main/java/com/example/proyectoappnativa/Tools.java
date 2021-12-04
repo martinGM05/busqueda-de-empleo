@@ -1,6 +1,9 @@
 package com.example.proyectoappnativa;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.view.View;
 import android.view.Window;
@@ -8,7 +11,9 @@ import android.view.WindowManager;
 
 import androidx.annotation.ColorRes;
 
-class Tools {
+public class Tools {
+
+    Activity activity;
 
 
     static void setSystemBarColor(Activity act, @ColorRes int color) {
@@ -30,5 +35,14 @@ class Tools {
         }
     }
 
+    public static boolean isConnection(Activity activity){
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if(netInfo != null && netInfo.isConnected()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }

@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home2"
-            android:title="Postulaciones"
+            android:id="@+id/nav_home"
+            android:title="@string/postulaciones"
             android:icon="@drawable/ic_baseline_assignment"
             android:checked="true"/>
         <item
             android:id="@+id/nav_postulation"
-            android:title="Postulaciones Aceptadas"
+            android:title="@string/accepted_applications"
             android:icon="@drawable/ic_baseline_save"/>
         <item
-            android:id="@+id/nav_profile2"
+            android:id="@+id/nav_profile"
             android:title="@string/perfil"
             android:icon="@drawable/ic_baseline_account_circle_24"/>
     </group>
