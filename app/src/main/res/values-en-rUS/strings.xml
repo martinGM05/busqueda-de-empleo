@@ -72,5 +72,19 @@
     <string name="email_exists">The email already exists</string>
     <string name="postulationUpdated">Updated application</string>
     <string name="Applied_This_Offer">You have already applied for this offer</string>
+    <string name="emptyField">Empty field</string>
+    <string name="insertImage">Insert an image</string>
+    <string name="validation">Validation</string>
+    <string name="invalidEmail">Invalid email</string>
+    <string name="invalidPhone">Invalid phone</string>
+    <string name="validationPassword">The password must be greater than 5 characters</string>
+    <string name="dont_jobExist">There is no work</string>
+    <string name="dont_job_hasAccepted">No job has accepted you</string>
+    <string name="dont_postulates">You don\'t have any applicants</string>
+    <string name="jobAceptNoti">You have been accepted into the job of</string>
+    <string name="notExist">Does not exist</string>
+    <string name="permiseToCall">Please give call permissions</string>
+    <string name="insertLatLon">Insert the coordinates</string>
+    <string name="No_connection">You have no connection, please connect to the internet</string>
 
 </resources>

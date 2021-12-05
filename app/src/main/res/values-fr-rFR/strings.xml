@@ -72,4 +72,18 @@
     <string name="email_exists">L\'e-mail existe déjà</string>
     <string name="postulationUpdated">Application mise à jour</string>
     <string name="Applied_This_Offer">Vous avez déjà postulé pour cette offre</string>
+    <string name="emptyField">Champ vide</string>
+    <string name="insertImage">Insérer une image</string>
+    <string name="validation">Validation</string>
+    <string name="invalidEmail">Email invalide</string>
+    <string name="invalidPhone">Téléphone invalide</string>
+    <string name="validationPassword">Le mot de passe doit être supérieur à 5 caractères</string>
+    <string name="dont_jobExist">Il n\'y a pas de travail</string>
+    <string name="dont_job_hasAccepted">Aucun travail ne vous a accepté</string>
+    <string name="dont_postulates">Vous n\'avez aucun candidat</string>
+    <string name="jobAceptNoti">Vous avez été accepté au poste de</string>
+    <string name="notExist">N\'existe pas</string>
+    <string name="permiseToCall">Veuillez donner les autorisations d\'appel</string>
+    <string name="insertLatLon">Insérez les coordonnées</string>
+    <string name="No_connection">Vous n\'avez pas de connexion, veuillez vous connecter à Internet</string>
 </resources>

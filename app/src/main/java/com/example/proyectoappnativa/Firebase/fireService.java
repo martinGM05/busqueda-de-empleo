@@ -243,7 +243,7 @@ public class fireService{
     public void updateUser(Activity context,String id, String name, String email,String description, String type, Uri imagenUri, String phone, Short photo){
         if(photo > 0){
             mStorageRef = FirebaseStorage.getInstance().getReference();
-            path = R.string.FotosURL + id;
+            path = context.getString(R.string.FotosURL) + id;
             StorageReference riversRef = mStorageRef.child(path);
             UploadTask uploadTask = riversRef.putFile(imagenUri);
             uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
