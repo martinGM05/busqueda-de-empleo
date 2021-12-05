@@ -240,40 +240,55 @@ public class fireService{
 
     // Update info
 
-    public void updateUser(Activity context,String id, String name, String email,String description, String type, Uri imagenUri){
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-        path = R.string.FotosURL + id;
-        StorageReference riversRef = mStorageRef.child(path);
-        UploadTask uploadTask = riversRef.putFile(imagenUri);
-        uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    throw task.getException();
+    public void updateUser(Activity context,String id, String name, String email,String description, String type, Uri imagenUri, String phone, Short photo){
+        if(photo > 0){
+            mStorageRef = FirebaseStorage.getInstance().getReference();
+            path = R.string.FotosURL + id;
+            StorageReference riversRef = mStorageRef.child(path);
+            UploadTask uploadTask = riversRef.putFile(imagenUri);
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return riversRef.getDownloadUrl();
                 }
-                return riversRef.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
-                    path = downloadUri.toString();
-                    db.collection(context.getString(R.string.UsuariosFirebase))
-                            .document(id).update(context.getString(R.string.nameFirebaseField), name, context.getString(R.string.descriptionFirebaseField), description, context.getString(R.string.imageFirebaseField), path).addOnCompleteListener(
-                            new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        DbUsers dbUsers = new DbUsers(context);
-                                        dbUsers.updateUser(id, name, email, description, type, "",path);
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        path = downloadUri.toString();
+                        db.collection(context.getString(R.string.UsuariosFirebase))
+                                .document(id).update(context.getString(R.string.nameFirebaseField), name, context.getString(R.string.descriptionFirebaseField), description, context.getString(R.string.imageFirebaseField), path).addOnCompleteListener(
+                                new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            DbUsers dbUsers = new DbUsers(context);
+                                            dbUsers.updateUser(id, name, email, description, type, phone,path);
+                                        }
                                     }
                                 }
-                            }
-                    );
+                        );
+                    }
                 }
-            }
-        });
+            });
+        }else{
+            db.collection(context.getString(R.string.UsuariosFirebase))
+                    .document(id).update(context.getString(R.string.nameFirebaseField), name, context.getString(R.string.descriptionFirebaseField), description, "phone",phone ).addOnCompleteListener(
+                    new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                DbUsers dbUsers = new DbUsers(context);
+                                dbUsers.updateUser(id, name, email, description, type, phone, "");
+                            }
+                        }
+                    }
+            );
+        }
     }
 
     public void updateApplicationsFirebase(Activity context, String idDocument, List<String> postulantes){

@@ -110,6 +110,7 @@ public class ProfileFragment extends Fragment {
     int TOMAR_FOTO = 100;
     int SELEC_IMAGEN = 200;
     private boolean online;
+    short photo = 0;
 
 
     @Override
@@ -212,6 +213,7 @@ public class ProfileFragment extends Fragment {
     public void updateUser(){
         String name = Objects.requireNonNull(inputName.getText()).toString();
         String description = Objects.requireNonNull(inputDescription.getText()).toString();
+        String phone = Objects.requireNonNull(inputPhone.getText()).toString();
 
         for(EditText editText : new EditText[]{inputName, inputDescription, inputPhone}){
             if(TextUtils.isEmpty(editText.getText().toString())){
@@ -219,13 +221,12 @@ public class ProfileFragment extends Fragment {
                 return;
             }
         }
-        if(imagenUri == null){
-            AlertDialog.showAlertDialog(requireActivity(), getString(R.string.titleError), getString(R.string.insertImage));
-            return;
+        if(imagenUri!=null){
+            photo = 1;
         }
         if (Tools.isConnection(requireActivity())){
             try {
-                firebase.updateUser(getActivity(), idUser, name, usuario.getEmail(),description, usuario.getType(),imagenUri);
+                firebase.updateUser(getActivity(), idUser, name, usuario.getEmail(),description, usuario.getType(),imagenUri, phone, photo);
                 Snackbar.make(requireActivity().findViewById(R.id.content), R.string.userUpdated, Snackbar.LENGTH_LONG).setBackgroundTint(requireContext().getColor(R.color.secondaryDarkColor)).show();
             }catch (Exception err){
                 Snackbar.make(requireActivity().findViewById(R.id.content), R.string.titleError, Snackbar.LENGTH_LONG).setBackgroundTint(requireContext().getColor(R.color.secondaryDarkColor)).show();
